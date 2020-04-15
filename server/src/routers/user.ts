@@ -12,7 +12,7 @@ export const userList = [
     role: 'admin',
   },
   {
-    id: uuid(),
+    id: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
     name: 'Arty',
     email: 'joy4707710@gmail.com',
     password: 'password123',

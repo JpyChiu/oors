@@ -23,10 +23,6 @@ export const hotels = [
 
 const HotelRouter = express.Router()
 
-HotelRouter.get('/', function(req, res) {
-  res.send(hotels)
-})
-
 // TODO: find enabled room
 // HotelRouter.get('/find', function(req, res) {
 //   res.send(hotels)
