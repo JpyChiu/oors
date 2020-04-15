@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors())
 
 // Routes
-app.use('/v1/user', Users)
-app.use('/v1/hotel', Hotel)
-app.use('/v1/reservation', Reservation)
+app.use('/api/user', Users)
+app.use('/api/hotel', Hotel)
+app.use('/api/reservation', Reservation)
 
 export default app
