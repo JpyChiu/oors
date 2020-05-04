@@ -1,6 +1,7 @@
 import express from 'express'
+import {orderQueue} from './reservation'
 
-export const hotels = [
+export const hotelList = [
   {
     id: 'room_00001',
     hotel_name: 'family mart',
@@ -23,9 +24,26 @@ export const hotels = [
 
 const HotelRouter = express.Router()
 
-// TODO: find enabled room
-// HotelRouter.get('/find', function(req, res) {
-//   res.send(hotels)
-// })
+// find enabled room
+HotelRouter.get('/find', function(req, res) {
+  const start_date: Date = convert_yyyymmdd_to_date(req.query.start)
+  const end_date: Date = convert_yyyymmdd_to_date(req.query.end)
+  const disabledHotelIdList = orderQueue
+    .filter(order => {
+      const db_start_date = convert_yyyymmdd_to_date(order.start_date)
+      const db_end_date = convert_yyyymmdd_to_date(order.end_date)
+      return end_date >= db_start_date && start_date <= db_end_date
+    })
+    .map(order => order.hotel_id)
+  const enabledHotelList = hotelList.filter(hotel => !disabledHotelIdList.includes(hotel.id))
+  res.send(enabledHotelList)
+})
+
+const convert_yyyymmdd_to_date = (yyyymmdd: string): Date => {
+  const y = parseInt(yyyymmdd.substring(0, 4))
+  const m = parseInt(yyyymmdd.substring(4, 6))
+  const d = parseInt(yyyymmdd.substring(6, 8))
+  return new Date(y, m, d)
+}
 
 export default HotelRouter
