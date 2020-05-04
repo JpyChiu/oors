@@ -12,7 +12,7 @@ UserRouter.post('/', function(req, res) {
   const user = {
     ...req.body,
     id: uuid(),
-    session: new Date().toISOString(),
+    session: new Date().valueOf(),
     role: 'user',
   }
   userList.push(user)
