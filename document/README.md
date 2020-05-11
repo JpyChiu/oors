@@ -9,6 +9,8 @@
 
 ## Reservation
 
+note: `need a user session in request Header`
+
 - post `/api/reservation`: booking a hotel
 - get `/api/reservation/retrieve_user_orders`: get user all reservations
 - put `/api/reservation/:id`: user can canceled his order; admin can accept/reject order
