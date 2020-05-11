@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4'
+import { OrderQueue } from '../model'
 
-export const orderQueue = [
+export const orderQueue: Array<OrderQueue> = [
   {
     id: 'test_id',
     hotel_id: 'room_00001',

@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4'
+import { User } from '../model'
 
-export const userList = [
+export const userList: Array<User> = [
   {
     id: 'user_00000',
     name: '房東',
