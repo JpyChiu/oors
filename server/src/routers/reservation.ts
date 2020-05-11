@@ -10,11 +10,14 @@ ReservationRouter.post('/', function(req, res) {})
 
 // Retrieve Orders which belong target user
 ReservationRouter.get('/retrieve_user_orders', function(req, res) {
-  const targer_user = validate_authorization(req.headers.authorization)
-  if (!targer_user) {
+  const target_user = validate_authorization(req.headers.authorization)
+  if (!target_user) {
     res.status(401).send('Please login first')
   } else {
-    res.send('ok')
+    const user_order_list = orderQueue.filter(order => {
+      return order.tenant_id === target_user.id
+    })
+    res.send(user_order_list)
   }
 })
 
