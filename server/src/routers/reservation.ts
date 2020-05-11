@@ -2,11 +2,27 @@ import express from 'express'
 import { userList } from '../fakeData/user'
 import { orderQueue } from '../fakeData/orderQueue'
 import { User } from '../model'
+import uuid from 'uuid'
 
 const ReservationRouter = express.Router()
 
 // Book hotel
-ReservationRouter.post('/', (req, res) => {})
+ReservationRouter.post('/', (req, res) => {
+  const target_user = validate_authorization(req.headers.authorization)
+  if (!target_user) {
+    res.status(401).send('Please login first')
+  } else {
+    const order = {
+      ...req.body,
+      id: uuid(),
+      tenant_id: target_user.id,
+      is_paid: false,
+      status: 'live',
+    }
+    orderQueue.push(order)
+    res.send(order)
+  }
+})
 
 // Retrieve Orders which belong target user
 ReservationRouter.get('/retrieve_user_orders', (req, res) => {
