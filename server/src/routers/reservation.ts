@@ -6,10 +6,10 @@ import { User } from '../model'
 const ReservationRouter = express.Router()
 
 // Book hotel
-ReservationRouter.post('/', function(req, res) {})
+ReservationRouter.post('/', (req, res) => {})
 
 // Retrieve Orders which belong target user
-ReservationRouter.get('/retrieve_user_orders', function(req, res) {
+ReservationRouter.get('/retrieve_user_orders', (req, res) => {
   const target_user = validate_authorization(req.headers.authorization)
   if (!target_user) {
     res.status(401).send('Please login first')
@@ -22,7 +22,32 @@ ReservationRouter.get('/retrieve_user_orders', function(req, res) {
 })
 
 // User cancel order, and admin reject/receive order
-ReservationRouter.put('/:id', function(req, res) {})
+ReservationRouter.put('/:id', (req, res) => {
+  const target_user = validate_authorization(req.headers.authorization)
+  const req_id = req.params.id
+  if (!target_user) {
+    res.status(401).send('Please login first')
+  } else {
+    const target_order = orderQueue.find(order => order.id === req_id)
+    if (!target_order) {
+      res.status(400).send('This order is not belong the target user')
+    } else {
+      let targetIdx = -1
+      orderQueue.find((order, idx) => {
+        if (order.id === req_id) {
+          orderQueue[idx] = {
+            ...orderQueue[idx],
+            ...req.body,
+          }
+          targetIdx = idx
+          return true
+        }
+        return false
+      })
+      res.send(orderQueue[targetIdx])
+    }
+  }
+})
 
 const validate_authorization = (session: string | undefined): User | undefined => {
   if (!session) {

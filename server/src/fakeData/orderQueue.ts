@@ -2,7 +2,7 @@ import uuid from 'uuid/v4'
 
 export const orderQueue = [
   {
-    id: uuid(),
+    id: 'test_id',
     hotel_id: 'room_00001',
     tenant_id: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
     start_date: '20200510',
@@ -38,6 +38,7 @@ export const orderQueue = [
     start_date: '20200410',
     end_date: '20200411',
     price: 1000,
+    is_paid: true,
     status: 'outdate',
   },
   {
@@ -47,6 +48,7 @@ export const orderQueue = [
     start_date: '20200510',
     end_date: '20200511',
     price: 1000,
+    is_paid: false,
     status: 'canceled',
   },
   {
@@ -56,6 +58,7 @@ export const orderQueue = [
     start_date: '20200510',
     end_date: '20200511',
     price: 1000,
+    is_paid: false,
     status: 'reject',
   },
 ]

@@ -16,7 +16,7 @@ export const userList = [
     email: 'joy4707710@gmail.com',
     password: 'password123',
     phone: '0912345678',
-    session: '',
+    session: 'abcdefg',
     role: 'user',
   },
   {
