@@ -1,6 +1,6 @@
 import { Hotel } from '../model'
 
-export const hotelList: Array<Hotel> = [
+export const hotelList: Hotel[] = [
   {
     id: 'room_00001',
     hotel_name: 'family mart',

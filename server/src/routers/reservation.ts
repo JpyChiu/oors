@@ -1,7 +1,7 @@
 import express from 'express'
 import { userList } from '../fakeData/user'
 import { orderQueue } from '../fakeData/orderQueue'
-import { User } from '../model'
+import { User, OrderQueue } from '../model'
 import uuid from 'uuid'
 
 const ReservationRouter = express.Router()
@@ -12,7 +12,7 @@ ReservationRouter.post('/', (req, res) => {
   if (!target_user) {
     res.status(401).send('Please login first')
   } else {
-    const order = {
+    const order: OrderQueue = {
       ...req.body,
       id: uuid(),
       tenant_id: target_user.id,

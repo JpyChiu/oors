@@ -1,6 +1,7 @@
 import express from 'express'
 import uuid from 'uuid/v4'
 import { userList } from '../fakeData/user'
+import { User } from '../model'
 
 const UserRouter = express.Router()
 
@@ -9,7 +10,7 @@ UserRouter.get('/', function(req, res) {
 })
 
 UserRouter.post('/', function(req, res) {
-  const user = {
+  const user: User = {
     ...req.body,
     id: uuid(),
     session: new Date().valueOf(),
