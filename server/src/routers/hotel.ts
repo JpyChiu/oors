@@ -1,6 +1,7 @@
 import express from 'express'
 import { orderQueue } from '../fakeData/orderQueue'
 import { hotelList } from '../fakeData/hotel'
+import { convert_yyyymmdd_to_date } from '../util'
 
 const HotelRouter = express.Router()
 
@@ -18,12 +19,5 @@ HotelRouter.get('/find', function(req, res) {
   const enabledHotelList = hotelList.filter(hotel => !disabledHotelIdList.includes(hotel.id))
   res.send(enabledHotelList)
 })
-
-const convert_yyyymmdd_to_date = (yyyymmdd: string): Date => {
-  const y = parseInt(yyyymmdd.substring(0, 4))
-  const m = parseInt(yyyymmdd.substring(4, 6))
-  const d = parseInt(yyyymmdd.substring(6, 8))
-  return new Date(y, m, d)
-}
 
 export default HotelRouter
