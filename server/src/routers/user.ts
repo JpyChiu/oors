@@ -11,7 +11,15 @@ UserRouter.get('/', (req, res) => {
 })
 
 // Retrieve user API
-UserRouter.get('/:id', () => {})
+UserRouter.get('/:id', (req, res) => {
+  const req_id = req.params.id
+  const target_user = userList.find(user => user.id === req_id)
+  if (!target_user) {
+    res.status(404).send('not exist user')
+  } else {
+    res.send(target_user)
+  }
+})
 
 // Register API
 UserRouter.post('/', (req, res) => {
@@ -40,6 +48,7 @@ UserRouter.post('/login', (req, res) => {
   }
 })
 
+// Update user API
 UserRouter.put('/:id', (req, res) => {
   const req_id = req.params.id
   let targetIdx = -1
