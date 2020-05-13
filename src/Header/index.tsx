@@ -17,13 +17,24 @@ function Header() {
     history.push('/login')
   }, [history])
 
+  const handleLogoutClick = useCallback(() => {
+    // TODO: clear user session
+    history.push('/')
+  }, [history])
+
+  // TODO: only render Login button or Logout button
   return (
     <AppBar position="static">
       <Toolbar className={classes.root}>
         <Typography variant="h5">OORS</Typography>
-        <Button variant="outlined" color="inherit" onClick={handleLoginClick}>
-          Login
-        </Button>
+        <div>
+          <Button variant="outlined" color="inherit" onClick={handleLoginClick}>
+            Login
+          </Button>
+          <Button variant="outlined" color="inherit" onClick={handleLogoutClick}>
+            Logout
+          </Button>
+        </div>
       </Toolbar>
     </AppBar>
   )
