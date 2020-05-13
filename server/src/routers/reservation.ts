@@ -1,8 +1,9 @@
 import express from 'express'
+import uuid from 'uuid'
 import { userList } from '../fakeData/user'
 import { orderQueue } from '../fakeData/orderQueue'
 import { User, OrderQueue } from '../model'
-import uuid from 'uuid'
+import { validate_authorization } from '../util'
 
 const ReservationRouter = express.Router()
 
@@ -64,12 +65,5 @@ ReservationRouter.put('/:id', (req, res) => {
     }
   }
 })
-
-const validate_authorization = (session: string | undefined): User | undefined => {
-  if (!session) {
-    return undefined
-  }
-  return userList.find(user => user.session === session)
-}
 
 export default ReservationRouter
