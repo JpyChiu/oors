@@ -5,27 +5,42 @@ import { User } from '../model'
 
 const UserRouter = express.Router()
 
-UserRouter.get('/', function(req, res) {
+// Retrieve All user API
+UserRouter.get('/', (req, res) => {
   res.send(userList)
 })
 
-UserRouter.post('/', function(req, res) {
-  const user: User = {
+// Retrieve user API
+UserRouter.get('/:id', () => {})
+
+// Register API
+UserRouter.post('/', (req, res) => {
+  const new_user: User = {
     ...req.body,
     id: uuid(),
-    session: new Date().valueOf(),
+    session: new Date().valueOf().toString(),
     role: 'user',
   }
-  userList.push(user)
-  res.send(user)
+  userList.push(new_user)
+  res.send(new_user)
 })
 
 // TODO: login API
-// UserRouter.post('/login', function(req, res) {
-//   res.send(user)
-// })
+UserRouter.post('/login', (req, res) => {
+  const target_user = userList.find(user => user.email === req.body.email)
+  if (!target_user) {
+    res.status(401).send('This email is not register')
+  } else {
+    if (target_user.password !== req.body.password) {
+      res.status(401).send('This password is wrong')
+    } else {
+      target_user.session = new Date().valueOf().toString()
+      res.send(target_user)
+    }
+  }
+})
 
-UserRouter.put('/:id', function(req, res) {
+UserRouter.put('/:id', (req, res) => {
   const req_id = req.params.id
   let targetIdx = -1
   userList.find((user, idx) => {

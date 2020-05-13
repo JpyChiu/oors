@@ -13,8 +13,8 @@ export const userList: User[] = [
   },
   {
     id: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
-    name: 'Arty',
-    email: 'joy4707710@gmail.com',
+    name: 'Adin',
+    email: 'tot777ya11@gmail.com',
     password: 'password123',
     phone: '0912345678',
     session: 'abcdefg',
@@ -22,8 +22,8 @@ export const userList: User[] = [
   },
   {
     id: uuid(),
-    name: 'kaya',
-    email: 'joy4707710@gmail.com',
+    name: 'andrew',
+    email: 'andrewch1312@gmail.com',
     password: 'password123',
     phone: '0912345678',
     session: '',
