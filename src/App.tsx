@@ -1,12 +1,11 @@
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
-import Header from './Header'
+import HomeControl from './HomeControl'
 
 function App() {
   return (
     <HashRouter>
-      <Header />
-      <main>hi</main>
+      <HomeControl />
     </HashRouter>
   )
 }
