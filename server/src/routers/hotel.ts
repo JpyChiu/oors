@@ -5,8 +5,13 @@ import { convert_yyyymmdd_to_date } from '../util'
 
 const HotelRouter = express.Router()
 
+// Retrieve all hotels
+HotelRouter.get('/', (req, res) => {
+  res.send(hotelList)
+})
+
 // find enabled room
-HotelRouter.get('/find', function(req, res) {
+HotelRouter.get('/find', (req, res) => {
   const start_date = convert_yyyymmdd_to_date(req.query.start)
   const end_date = convert_yyyymmdd_to_date(req.query.end)
   const disabledHotelIdList = orderQueue
