@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect, Switch, Route, useLocation } from 'react-router-dom'
 import Header from '../Header'
-import routes from '../routes'
+import routes from '../../routes'
 import FindRoom from '../FindRoom'
 
 function HomeControl() {

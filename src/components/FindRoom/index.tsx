@@ -1,10 +1,15 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form } from 'react-final-form'
-import { Button, Grid, MenuItem, Typography } from '@material-ui/core'
+import { Button, Grid, Typography } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import { AddLocation, CalendarToday, People } from '@material-ui/icons'
 import DateFnsUtils from '@date-io/date-fns'
 import { Select, KeyboardDatePicker, SelectData } from 'mui-rff'
+
+import { getAllHotels } from '../../epics/hotel/actions'
+import { StoreState } from '../../reducers/rootReducer'
+import { Hotel } from '../../models/hotel'
 
 const SearchButton = styled(Button)({
   width: 185,
@@ -18,25 +23,45 @@ const SearchButton = styled(Button)({
 })
 
 export default function FindRoom() {
-  const citySelectData: SelectData[] = [
-    { label: 'Tokyo', value: 'Tokyo' },
-    { label: 'New York', value: 'New York' },
-    { label: 'Paris', value: 'Paris' },
-  ]
+  const dispatch = useDispatch()
+  const { hotelList } = useSelector((storeState: StoreState) => ({
+    hotelList: storeState.hotels.hotelList,
+  }))
 
-  const personSelectData: SelectData[] = [
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
-    { label: '4', value: '4' },
-    { label: '5', value: '5' },
-    { label: '6', value: '6' },
-  ]
+  useEffect(() => {
+    dispatch(getAllHotels())
+  }, [dispatch])
+
+  // const citySelectData: SelectData[] = [
+  //   { label: 'Tokyo', value: 'Tokyo' },
+  //   { label: 'New York', value: 'New York' },
+  //   { label: 'Paris', value: 'Paris' },
+  // ]
+
+  const citySelectData: SelectData[] = hotelList
+    .filter((hotel: Hotel, index: number, self: Hotel[]) => {
+      return index === self.findIndex(t => t.hotelName === hotel.hotelName)
+    })
+    .map((hotel: Hotel) => {
+      return { label: hotel.hotelName, value: hotel.hotelName }
+    })
+
+  const personSelectData: SelectData[] = hotelList
+    .filter((hotel: Hotel, index: number, self: Hotel[]) => {
+      return index === self.findIndex(t => t.person === hotel.person)
+    })
+    .map((hotel: Hotel) => {
+      return { label: `${hotel.person}`, value: `${hotel.person}` }
+    })
 
   // TODO: call api
-  const onSubmit = useCallback(value => {
-    console.log(value)
-  }, [])
+  const onSubmit = useCallback(
+    value => {
+      console.log(value)
+      console.log(hotelList)
+    },
+    [hotelList],
+  )
 
   return (
     <div style={{ marginTop: 100 }}>
