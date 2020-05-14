@@ -7,9 +7,10 @@ import { AddLocation, CalendarToday, People } from '@material-ui/icons'
 import DateFnsUtils from '@date-io/date-fns'
 import { Select, KeyboardDatePicker, SelectData } from 'mui-rff'
 
-import { getAllHotels } from '../../epics/hotel/actions'
+import { getAllHotels, getEnabledHotels } from '../../epics/hotel/actions'
 import { StoreState } from '../../reducers/rootReducer'
 import { Hotel } from '../../models/hotel'
+import { dateToYyyymmdd } from '../../utils/dateConvert'
 
 const SearchButton = styled(Button)({
   width: 185,
@@ -41,10 +42,10 @@ export default function FindRoom() {
 
   const citySelectData: SelectData[] = hotelList
     .filter((hotel: Hotel, index: number, self: Hotel[]) => {
-      return index === self.findIndex(t => t.hotelName === hotel.hotelName)
+      return index === self.findIndex(t => t.city === hotel.city)
     })
     .map((hotel: Hotel) => {
-      return { label: hotel.hotelName, value: hotel.hotelName }
+      return { label: hotel.city, value: hotel.city }
     })
 
   const personSelectData: SelectData[] = hotelList
@@ -58,10 +59,16 @@ export default function FindRoom() {
   // TODO: call api
   const onSubmit = useCallback(
     (formData: FormData) => {
-      console.log(formData.startDate.toISOString)
-      console.log(hotelList)
+      dispatch(
+        getEnabledHotels({
+          startDate: dateToYyyymmdd(formData.startDate),
+          endDate: dateToYyyymmdd(formData.endDate),
+          city: formData.city,
+          person: formData.person,
+        }),
+      )
     },
-    [hotelList],
+    [dispatch],
   )
 
   return (

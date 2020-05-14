@@ -15,6 +15,7 @@ import {
 const responseToModel = (resp: IncomingHotel): Hotel => ({
   id: resp.id,
   hotelName: resp.hotel_name,
+  city: resp.city,
   pricePerDay: resp.price_per_day,
   person: resp.person,
   description: resp.description,
