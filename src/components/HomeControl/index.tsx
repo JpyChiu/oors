@@ -3,7 +3,7 @@ import { Redirect, Switch, Route, useLocation } from 'react-router-dom'
 import Header from '../Header'
 import routes from '../../routes'
 import FindRoom from '../FindRoom'
-import Login from '../Login'
+import Login from '../../Login'
 
 function HomeControl() {
   const location = useLocation()
