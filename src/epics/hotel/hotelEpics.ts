@@ -4,7 +4,13 @@ import { of } from 'rxjs'
 import { catchError, exhaustMap, map } from 'rxjs/operators'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
 import { IncomingHotel, Hotel } from '../../models/hotel'
-import { HOTEL_ACTIONS, getAllHotelsSuccess, getAllHotelsFailed } from './actions'
+import {
+  HOTEL_ACTIONS,
+  getAllHotelsSuccess,
+  getAllHotelsFailed,
+  getEnabledHotelsSuccess,
+  getEnabledHotelsFailed,
+} from './actions'
 
 const responseToModel = (resp: IncomingHotel): Hotel => ({
   id: resp.id,
@@ -16,7 +22,7 @@ const responseToModel = (resp: IncomingHotel): Hotel => ({
 
 const responseToModelList = (resp: any): Hotel[] => resp.map((entity: IncomingHotel) => responseToModel(entity))
 
-export const getPostListEpic = (action$: ActionsObservable<AnyAction>) =>
+export const getAllHotelsEpic = (action$: ActionsObservable<AnyAction>) =>
   action$.pipe(
     ofType(HOTEL_ACTIONS.GET_HOTEL_LIST),
     exhaustMap(() =>
@@ -27,4 +33,15 @@ export const getPostListEpic = (action$: ActionsObservable<AnyAction>) =>
     ),
   )
 
-export default [getPostListEpic]
+export const getEnabledHotelsEpic = (action$: ActionsObservable<AnyAction>) =>
+  action$.pipe(
+    ofType(HOTEL_ACTIONS.GET_ENABLED_HOTEL_LIST),
+    exhaustMap(({ payload: { startDate, endDate, city, person } }) =>
+      ajax.get(`/api/hotel/find?startDate=${startDate}&endDate=${endDate}&city=${city}&person=${person}`).pipe(
+        map((res: AjaxResponse) => getEnabledHotelsSuccess(responseToModelList(res.response))),
+        catchError(() => of(getEnabledHotelsFailed())),
+      ),
+    ),
+  )
+
+export default [getAllHotelsEpic, getEnabledHotelsEpic]

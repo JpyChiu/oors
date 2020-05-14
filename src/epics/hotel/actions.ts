@@ -21,3 +21,17 @@ export const getAllHotelsSuccess = (payload: Hotel[]) => ({
 export const getAllHotelsFailed = () => ({
   type: HOTEL_ACTIONS.GET_HOTEL_LIST_FAILED,
 })
+
+export const getEnabledHotels = (payload: { startDate: string; endDate: string; city: string; person: number }) => ({
+  type: HOTEL_ACTIONS.GET_ENABLED_HOTEL_LIST,
+  payload,
+})
+
+export const getEnabledHotelsSuccess = (payload: Hotel[]) => ({
+  type: HOTEL_ACTIONS.GET_ENABLED_HOTEL_LIST_SUCCESS,
+  payload,
+})
+
+export const getEnabledHotelsFailed = () => ({
+  type: HOTEL_ACTIONS.GET_ENABLED_HOTEL_LIST_FAILED,
+})

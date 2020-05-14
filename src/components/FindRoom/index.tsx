@@ -22,6 +22,13 @@ const SearchButton = styled(Button)({
   },
 })
 
+interface FormData {
+  city: string
+  startDate: Date
+  endDate: Date
+  person: number
+}
+
 export default function FindRoom() {
   const dispatch = useDispatch()
   const { hotelList } = useSelector((storeState: StoreState) => ({
@@ -31,12 +38,6 @@ export default function FindRoom() {
   useEffect(() => {
     dispatch(getAllHotels())
   }, [dispatch])
-
-  // const citySelectData: SelectData[] = [
-  //   { label: 'Tokyo', value: 'Tokyo' },
-  //   { label: 'New York', value: 'New York' },
-  //   { label: 'Paris', value: 'Paris' },
-  // ]
 
   const citySelectData: SelectData[] = hotelList
     .filter((hotel: Hotel, index: number, self: Hotel[]) => {
@@ -51,13 +52,13 @@ export default function FindRoom() {
       return index === self.findIndex(t => t.person === hotel.person)
     })
     .map((hotel: Hotel) => {
-      return { label: `${hotel.person}`, value: `${hotel.person}` }
+      return { label: `${hotel.person}`, value: hotel.person }
     })
 
   // TODO: call api
   const onSubmit = useCallback(
-    value => {
-      console.log(value)
+    (formData: FormData) => {
+      console.log(formData.startDate.toISOString)
       console.log(hotelList)
     },
     [hotelList],

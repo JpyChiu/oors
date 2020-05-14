@@ -12,6 +12,8 @@ HotelRouter.get('/', (req, res) => {
 
 // find enabled room
 HotelRouter.get('/find', (req, res) => {
+  const city = req.query.city
+  const person = req.query.person
   const start_date = convert_yyyymmdd_to_date(req.query.start)
   const end_date = convert_yyyymmdd_to_date(req.query.end)
   const disabledHotelIdList = orderQueue
@@ -21,7 +23,10 @@ HotelRouter.get('/find', (req, res) => {
       return end_date >= db_start_date && start_date <= db_end_date
     })
     .map(order => order.hotel_id)
-  const enabledHotelList = hotelList.filter(hotel => !disabledHotelIdList.includes(hotel.id))
+  const enabledHotelList = hotelList
+    .filter(hotel => !disabledHotelIdList.includes(hotel.id))
+    .filter(hotel => hotel.city === city && hotel.person === person)
+
   res.send(enabledHotelList)
 })
 

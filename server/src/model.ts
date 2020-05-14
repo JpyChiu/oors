@@ -11,6 +11,7 @@ export interface User {
 export interface Hotel {
   id: string
   hotel_name: string
+  city: string
   price_per_day: number
   person: number
   description: string
