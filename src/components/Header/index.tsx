@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { AppBar, Button, Toolbar, Typography, makeStyles } from '@material-ui/core'
+import routes from '../../routes'
 
 const useStyles = makeStyles({
   root: {
@@ -14,12 +15,12 @@ function Header() {
   const history = useHistory()
 
   const handleLoginClick = useCallback(() => {
-    history.push('/login')
+    history.push(routes.login)
   }, [history])
 
   const handleLogoutClick = useCallback(() => {
     // TODO: clear user session
-    history.push('/')
+    history.push(routes.home)
   }, [history])
 
   // TODO: only render Login button or Logout button

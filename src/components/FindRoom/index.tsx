@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { Form } from 'react-final-form'
 import { Button, Grid, Typography } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
@@ -11,6 +12,7 @@ import { getAllHotels, getEnabledHotels } from '../../epics/hotel/actions'
 import { StoreState } from '../../reducers/rootReducer'
 import { Hotel } from '../../models/hotel'
 import { dateToYyyymmdd } from '../../utils/dateConvert'
+import routes from '../../routes'
 
 const SearchButton = styled(Button)({
   width: 185,
@@ -31,6 +33,7 @@ interface FormData {
 }
 
 export default function FindRoom() {
+  const history = useHistory()
   const dispatch = useDispatch()
   const { hotelList } = useSelector((storeState: StoreState) => ({
     hotelList: storeState.hotels.hotelList,
@@ -56,7 +59,6 @@ export default function FindRoom() {
       return { label: `${hotel.person}`, value: hotel.person }
     })
 
-  // TODO: call api
   const onSubmit = useCallback(
     (formData: FormData) => {
       dispatch(
@@ -67,8 +69,9 @@ export default function FindRoom() {
           person: formData.person,
         }),
       )
+      history.push(routes.enabledRoomPage)
     },
-    [dispatch],
+    [dispatch, history],
   )
 
   return (
@@ -98,7 +101,14 @@ export default function FindRoom() {
                 <Typography style={{ paddingLeft: 10 }}>入住日期</Typography>
               </Grid>
               <Grid item style={{ marginTop: 10 }}>
-                <KeyboardDatePicker name="startDate" dateFunsUtils={DateFnsUtils} format="yyyy/MM/dd" required={true} />
+                <KeyboardDatePicker
+                  inputVariant="outlined"
+                  name="startDate"
+                  dateFunsUtils={DateFnsUtils}
+                  format="yyyy/MM/dd"
+                  required={true}
+                  style={{ width: 230 }}
+                />
               </Grid>
             </Grid>
             <Grid container justify="center" alignItems="center">
@@ -107,7 +117,14 @@ export default function FindRoom() {
                 <Typography style={{ paddingLeft: 10 }}>退房日期</Typography>
               </Grid>
               <Grid item style={{ marginTop: 10 }}>
-                <KeyboardDatePicker name="endDate" dateFunsUtils={DateFnsUtils} format="yyyy/MM/dd" required={true} />
+                <KeyboardDatePicker
+                  inputVariant="outlined"
+                  name="endDate"
+                  dateFunsUtils={DateFnsUtils}
+                  format="yyyy/MM/dd"
+                  required={true}
+                  style={{ width: 230 }}
+                />
               </Grid>
             </Grid>
             <Grid container justify="center" alignItems="center">

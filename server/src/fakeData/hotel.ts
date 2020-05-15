@@ -41,4 +41,28 @@ export const hotelList: Hotel[] = [
     person: 2,
     description: '全家就是你家',
   },
+  {
+    id: 'room_00006',
+    hotel_name: 'KFC',
+    city: 'Taipei',
+    price_per_day: 1000,
+    person: 2,
+    description: '蛋塔專賣店',
+  },
+  {
+    id: 'room_00007',
+    hotel_name: 'MosBurger',
+    city: 'Taipei',
+    price_per_day: 1000,
+    person: 2,
+    description: '摩絲漢堡',
+  },
+  {
+    id: 'room_00008',
+    hotel_name: 'Subway',
+    city: 'Taipei',
+    price_per_day: 1000,
+    person: 2,
+    description: '潛艇堡',
+  },
 ]
