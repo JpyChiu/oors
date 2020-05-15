@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton } from '@material-ui/core'
 import InfoIcon from '@material-ui/icons/Info'
 
+import RoomDetailDialog from './roomDetailDialog'
 import { StoreState } from '../../reducers/rootReducer'
 import { Hotel } from '../../models/hotel'
 import testImg from '../../Login/logo.jpg'
@@ -33,11 +34,26 @@ export default function EnabledRoomPage() {
   const { enabledHotelList } = useSelector((storeState: StoreState) => ({
     enabledHotelList: storeState.hotels.enabledHotelList,
   }))
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+  const [targetHotel, setTargetHotel] = useState<Hotel>({
+    id: 'dummyId',
+    hotelName: 'dummyName',
+    city: 'dummyCity',
+    pricePerDay: 0,
+    person: 0,
+    description: '',
+  })
+
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+  }
 
   const hotelInfoOnClick = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
-      const targetHotel = enabledHotelList.find(hotel => hotel.id === event.currentTarget.dataset['hotelId'])
-      console.log(targetHotel)
+      const findTargetHotel = enabledHotelList.find(hotel => hotel.id === event.currentTarget.dataset['hotelId'])
+      console.log(findTargetHotel)
+      setTargetHotel(findTargetHotel!)
+      setDialogOpen(true)
     },
     [enabledHotelList],
   )
@@ -48,27 +64,30 @@ export default function EnabledRoomPage() {
 
   const hotelLayout = () => {
     return (
-      <GridList cellHeight={250}>
-        {enabledHotelList.map((hotel: Hotel) => (
-          <GridListTile key={hotel.id}>
-            <img src={'https://i.imgur.com/dUETZoM.jpg'} alt={hotel.hotelName} draggable={false} />
-            <GridListTileBar
-              title={hotel.hotelName}
-              subtitle={<span>price: {hotel.pricePerDay}</span>}
-              actionIcon={
-                <IconButton
-                  aria-label={`info about ${hotel.hotelName}`}
-                  className={classes.icon}
-                  data-hotel-id={hotel.id}
-                  onClick={hotelInfoOnClick}
-                >
-                  <InfoIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
+      <>
+        <GridList cellHeight={250}>
+          {enabledHotelList.map((hotel: Hotel) => (
+            <GridListTile key={hotel.id}>
+              <img src={'https://i.imgur.com/dUETZoM.jpg'} alt={hotel.hotelName} draggable={false} />
+              <GridListTileBar
+                title={hotel.hotelName}
+                subtitle={<span>price: {hotel.pricePerDay}</span>}
+                actionIcon={
+                  <IconButton
+                    aria-label={`info about ${hotel.hotelName}`}
+                    className={classes.icon}
+                    data-hotel-id={hotel.id}
+                    onClick={hotelInfoOnClick}
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                }
+              />
+            </GridListTile>
+          ))}
+        </GridList>
+        <RoomDetailDialog enable={dialogOpen} hotelData={targetHotel} onClose={handleDialogClose} />
+      </>
     )
   }
 
