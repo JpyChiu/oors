@@ -15,6 +15,7 @@ export interface Hotel {
   price_per_day: number
   person: number
   description: string
+  picture_src: string
 }
 
 export interface OrderQueue {
