@@ -5,6 +5,7 @@ export interface Hotel {
   pricePerDay: number
   person: number
   description: string
+  pictureSrc: string
 }
 
 export interface IncomingHotel {
@@ -14,4 +15,5 @@ export interface IncomingHotel {
   price_per_day: number
   person: number
   description: string
+  picture_src: string
 }

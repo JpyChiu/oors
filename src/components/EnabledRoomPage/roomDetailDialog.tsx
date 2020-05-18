@@ -23,7 +23,7 @@ export default function RoomDetailDialog(props: React.PropsWithChildren<DialogPr
                 maxWidth: '100%',
                 maxHeight: '100%',
               }}
-              src="https://i.imgur.com/dUETZoM.jpg"
+              src={hotelData.pictureSrc}
               alt={hotelData.hotelName}
             />
           </Grid>

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton } from '@material-ui/core'
@@ -8,7 +8,6 @@ import InfoIcon from '@material-ui/icons/Info'
 import RoomDetailDialog from './roomDetailDialog'
 import { StoreState } from '../../reducers/rootReducer'
 import { Hotel } from '../../models/hotel'
-import testImg from '../../Login/logo.jpg'
 import routes from '../../routes'
 
 const useStyles = makeStyles(theme => ({
@@ -42,6 +41,7 @@ export default function EnabledRoomPage() {
     pricePerDay: 0,
     person: 0,
     description: '',
+    pictureSrc: 'https://i.imgur.com/dUETZoM.jpg',
   })
 
   const handleDialogClose = () => {
@@ -68,7 +68,7 @@ export default function EnabledRoomPage() {
         <GridList cellHeight={250}>
           {enabledHotelList.map((hotel: Hotel) => (
             <GridListTile key={hotel.id}>
-              <img src={'https://i.imgur.com/dUETZoM.jpg'} alt={hotel.hotelName} draggable={false} />
+              <img src={hotel.pictureSrc} alt={hotel.hotelName} draggable={false} />
               <GridListTileBar
                 title={hotel.hotelName}
                 subtitle={<span>price: {hotel.pricePerDay}</span>}

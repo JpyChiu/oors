@@ -19,6 +19,7 @@ const responseToModel = (resp: IncomingHotel): Hotel => ({
   pricePerDay: resp.price_per_day,
   person: resp.person,
   description: resp.description,
+  pictureSrc: resp.picture_src,
 })
 
 const responseToModelList = (resp: any): Hotel[] => resp.map((entity: IncomingHotel) => responseToModel(entity))
