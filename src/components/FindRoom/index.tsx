@@ -53,15 +53,17 @@ export default function FindRoom() {
 
   const onSubmit = useCallback(
     (formData: FormData) => {
+      const startDate = dateToYyyymmdd(formData.startDate)
+      const endDate = dateToYyyymmdd(formData.endDate)
       dispatch(
         getEnabledHotels({
-          startDate: dateToYyyymmdd(formData.startDate),
-          endDate: dateToYyyymmdd(formData.endDate),
+          startDate,
+          endDate,
           city: formData.city,
           person: formData.person,
         }),
       )
-      history.push(routes.enabledRoomPage)
+      history.push(routes.enabledRoomPage.concat(`?startDate=${startDate}&endDate=${endDate}`))
     },
     [dispatch, history],
   )

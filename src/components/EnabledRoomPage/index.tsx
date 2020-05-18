@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton } from '@material-ui/core'
 import InfoIcon from '@material-ui/icons/Info'
@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 export default function EnabledRoomPage() {
   const classes = useStyles()
   const history = useHistory()
+  const location = useLocation()
   const { enabledHotelList } = useSelector((storeState: StoreState) => ({
     enabledHotelList: storeState.hotels.enabledHotelList,
   }))
@@ -51,12 +52,21 @@ export default function EnabledRoomPage() {
   const hotelInfoOnClick = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       const findTargetHotel = enabledHotelList.find(hotel => hotel.id === event.currentTarget.dataset['hotelId'])
-      console.log(findTargetHotel)
       setTargetHotel(findTargetHotel!)
       setDialogOpen(true)
     },
     [enabledHotelList],
   )
+
+  const handleOrderClick = useCallback(() => {
+    console.log(location.search) //?startDate=yyyymm&endDate=yyyymm
+    const queries = location.search.substring(1).split('&')
+    if (queries.length === 2) {
+      const startDate = queries[0].split('=')[1]
+      const endDate = queries[1].split('=')[1]
+      console.log(startDate, endDate)
+    }
+  }, [location])
 
   const pageBackOnClick = useCallback(() => {
     history.push(routes.home)
@@ -65,7 +75,7 @@ export default function EnabledRoomPage() {
   const hotelLayout = () => {
     return (
       <>
-        <GridList cellHeight={250}>
+        <GridList cellHeight={250} style={{ padding: 5 }}>
           {enabledHotelList.map((hotel: Hotel) => (
             <GridListTile key={hotel.id}>
               <img src={hotel.pictureSrc} alt={hotel.hotelName} draggable={false} />
@@ -86,7 +96,12 @@ export default function EnabledRoomPage() {
             </GridListTile>
           ))}
         </GridList>
-        <RoomDetailDialog enable={dialogOpen} hotelData={targetHotel} onClose={handleDialogClose} />
+        <RoomDetailDialog
+          enable={dialogOpen}
+          hotelData={targetHotel}
+          onClose={handleDialogClose}
+          onOrder={handleOrderClick}
+        />
       </>
     )
   }
