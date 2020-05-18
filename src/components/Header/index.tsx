@@ -23,11 +23,17 @@ function Header() {
     history.push(routes.home)
   }, [history])
 
+  const handleLogoClick = useCallback(() => {
+    history.push(routes.home)
+  }, [history])
+
   // TODO: only render Login button or Logout button
   return (
     <AppBar position="static">
       <Toolbar className={classes.root}>
-        <Typography variant="h5">OORS</Typography>
+        <Button onClick={handleLogoClick} color="inherit">
+          <Typography variant="h5">OORS</Typography>
+        </Button>
         <div>
           <Button variant="outlined" color="inherit" onClick={handleLoginClick}>
             Login

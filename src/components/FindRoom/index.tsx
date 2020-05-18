@@ -8,9 +8,8 @@ import { AddLocation, CalendarToday, People } from '@material-ui/icons'
 import DateFnsUtils from '@date-io/date-fns'
 import { Select, KeyboardDatePicker, SelectData } from 'mui-rff'
 
-import { getAllHotels, getEnabledHotels } from '../../epics/hotel/actions'
+import { getCitiesAndPerson, getEnabledHotels } from '../../epics/hotel/actions'
 import { StoreState } from '../../reducers/rootReducer'
-import { Hotel } from '../../models/hotel'
 import { dateToYyyymmdd } from '../../utils/dateConvert'
 import routes from '../../routes'
 
@@ -35,29 +34,22 @@ interface FormData {
 export default function FindRoom() {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { hotelList } = useSelector((storeState: StoreState) => ({
-    hotelList: storeState.hotels.hotelList,
+  const { cities, persons } = useSelector((storeState: StoreState) => ({
+    cities: storeState.hotels.cities,
+    persons: storeState.hotels.persons,
   }))
 
   useEffect(() => {
-    dispatch(getAllHotels())
+    dispatch(getCitiesAndPerson())
   }, [dispatch])
 
-  const citySelectData: SelectData[] = hotelList
-    .filter((hotel: Hotel, index: number, self: Hotel[]) => {
-      return index === self.findIndex(t => t.city === hotel.city)
-    })
-    .map((hotel: Hotel) => {
-      return { label: hotel.city, value: hotel.city }
-    })
+  const citySelectData: SelectData[] = cities.map(city => {
+    return { label: city, value: city }
+  })
 
-  const personSelectData: SelectData[] = hotelList
-    .filter((hotel: Hotel, index: number, self: Hotel[]) => {
-      return index === self.findIndex(t => t.person === hotel.person)
-    })
-    .map((hotel: Hotel) => {
-      return { label: `${hotel.person}`, value: hotel.person }
-    })
+  const personSelectData: SelectData[] = persons.map(person => {
+    return { label: `${person}`, value: person }
+  })
 
   const onSubmit = useCallback(
     (formData: FormData) => {

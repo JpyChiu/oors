@@ -10,6 +10,25 @@ HotelRouter.get('/', (req, res) => {
   res.send(hotelList)
 })
 
+HotelRouter.get('/count', (req, res) => {
+  const hotel_props = {
+    cities: hotelList
+      .filter((hotel, index: number, self) => {
+        return index === self.findIndex(t => t.city === hotel.city)
+      })
+      .map(hotel => hotel.city),
+    person: hotelList
+      .filter((hotel, index: number, self) => {
+        return index === self.findIndex(t => t.person === hotel.person)
+      })
+      .map(hotel => hotel.person)
+      .sort((person_a, person_b) => {
+        return person_a - person_b
+      }),
+  }
+  res.send(hotel_props)
+})
+
 // find enabled room
 HotelRouter.get('/find', (req, res) => {
   const city = req.query.city

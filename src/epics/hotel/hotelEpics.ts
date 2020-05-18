@@ -6,8 +6,8 @@ import { ajax, AjaxResponse } from 'rxjs/ajax'
 import { IncomingHotel, Hotel } from '../../models/hotel'
 import {
   HOTEL_ACTIONS,
-  getAllHotelsSuccess,
-  getAllHotelsFailed,
+  getCitiesAndPersonSuccess,
+  getCitiesAndPersonFailed,
   getEnabledHotelsSuccess,
   getEnabledHotelsFailed,
 } from './actions'
@@ -26,11 +26,11 @@ const responseToModelList = (resp: any): Hotel[] => resp.map((entity: IncomingHo
 
 export const getAllHotelsEpic = (action$: ActionsObservable<AnyAction>) =>
   action$.pipe(
-    ofType(HOTEL_ACTIONS.GET_HOTEL_LIST),
+    ofType(HOTEL_ACTIONS.GET_CITIES_AND_PERSON),
     exhaustMap(() =>
-      ajax.get('/api/hotel').pipe(
-        map((res: AjaxResponse) => getAllHotelsSuccess(responseToModelList(res.response))),
-        catchError(() => of(getAllHotelsFailed())),
+      ajax.get('/api/hotel/count').pipe(
+        map((res: AjaxResponse) => getCitiesAndPersonSuccess(res.response)),
+        catchError(() => of(getCitiesAndPersonFailed())),
       ),
     ),
   )
