@@ -82,11 +82,11 @@ function Login(props: LoginProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
   const initUserInfo: UsersInfo = {
+    account: '',
     name: '',
     email: '',
-    gender: 'male',
-    birthday: '1980-01-01',
     password: '',
+    phone: 9,
   }
 
   const isLoginError = useCallback(() => {
@@ -146,15 +146,16 @@ function Login(props: LoginProps) {
                 />
               </Grid>
             </Grid>
+            {submitError && <div className="error">{submitError}</div>}
             {isLoginError()}
             {loginError && <Grid className={classes.errorMessage}>帳號或密碼錯誤</Grid>}
             <Grid container>
-              <Grid  container spacing={2} justify="center" alignItems="center" style={{ marginTop: 80 }} >
-                <LoginButton variant="outlined">
+              <Grid item container justify="flex-end" xs={6}>
+                <LoginButton variant="outlined" type="submit" disabled={submitting}>
                   登入
                 </LoginButton>
               </Grid>
-              <Grid  container spacing={2} justify="center" alignItems="center" style={{ marginTop: 80 }}>
+              <Grid item container justify="flex-start" xs={6}>
                 <RegisterButton variant="outlined" onClick={handleDialogOpen}>
                   註冊
                   <Register

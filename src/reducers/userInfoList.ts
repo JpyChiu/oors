@@ -1,11 +1,9 @@
-import { AnyAction } from 'redux'
-
 export interface UsersInfo {
+  account: string
   name: string
   email: string
-  gender: string
-  birthday: string
   password: string
+  phone: number
 }
 
 export interface UsersInfoListState {

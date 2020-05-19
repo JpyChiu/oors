@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Form } from 'react-final-form'
+import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
 import { TextField as _TextField, Select as _Select } from 'final-form-material-ui'
 import {
@@ -9,12 +9,18 @@ import {
   DialogContent,
   DialogContentText as _DialogContentText,
   DialogTitle,
-  FormControlLabel as _FormControlLabel,
   Grid,
-  MenuItem as _MenuItem,
 } from '@material-ui/core'
 
 import { UsersInfo } from '../../reducers/userInfoList'
+
+enum userContent {
+  accountStr = 'account',
+  emailStr = 'email',
+  nameStr = 'name',
+  passwordStr = 'password',
+  phoneStr = 'phone',
+}
 
 export interface DialogProps {
   data: UsersInfo
@@ -38,13 +44,6 @@ const DialogContentText = styled(_DialogContentText)({
   color: '#4D4F5C',
   fontSize: 14,
   margin: 0,
-})
-
-const FormControlLabel = styled(_FormControlLabel)({
-  color: '#4D4F5C',
-  '& .MuiTypography-body1': {
-    fontSize: 14,
-  },
 })
 
 const useStyles = makeStyles({
@@ -81,26 +80,64 @@ const useStyles = makeStyles({
   },
 })
 
-const MenuItem = styled(_MenuItem)({
-  color: '#43425D',
-  fontSize: 14,
-})
-
-const Select = styled(_Select)({
-  color: '#43425D',
-  width: 190,
-  height: 26,
-  textAlign: 'left',
-  borderColor: '#43425D',
-  fontSize: 14,
-})
-
 interface State {
 }
 export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const { confirmBtnFuncion, data, enable, onClose, children } = props
   const { backDrop, cancelButton: cancelButtonStyle, confirmbutton: confirmButtonStyle, title } = useStyles()
+  const [userInfo] = useState<UsersInfo>(data)
+  const {
+    accountStr,
+    emailStr,
+    nameStr,
+    passwordStr,
+    phoneStr,
+  } = userContent
 
+  const {
+    account,
+    email,
+    name,
+    phone,
+  } = userInfo
+
+  const labelAndTextInput = (
+    key:
+      | typeof accountStr
+      | typeof nameStr
+      | typeof emailStr
+      | typeof passwordStr
+      | typeof phoneStr,
+    defaultValue: string | number,
+    type: 'text' | 'number' | 'password',
+  ) => {
+    return (
+      <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
+        {renderLabel(snakeToCamel(key))}
+        <Grid item sm={7}>
+          <Field
+            required
+            name={key}
+            component={TextField as React.FC}
+            type={type}
+            variant="outlined"
+            defaultValue={defaultValue}
+          />
+        </Grid>
+      </Grid>
+    )
+  }
+
+  const renderLabel = (key: string) => {
+    return (
+      <Grid item sm={5}>
+        <DialogContentText>{key}</DialogContentText>
+      </Grid>
+    )
+  }
+
+  const snakeToCamel = (str: string) =>
+    str.replace(/([_][a-z])/g, (group: string) => group.toUpperCase().replace('_', ''))
 
   const onSubmit = () => {
     alert('Submit');
@@ -128,10 +165,11 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
             <DialogContent style={{ padding: '57px 100px' }}>
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  
+                  {labelAndTextInput(nameStr, name, 'text')}
+                  {labelAndTextInput(phoneStr, '', 'number')}
+                  {labelAndTextInput(emailStr, email, 'text')}
+                  {labelAndTextInput(accountStr, account, 'text')}
+                  {labelAndTextInput(passwordStr, '', 'password')}
                 </Grid>
               </Grid>
             </DialogContent>
