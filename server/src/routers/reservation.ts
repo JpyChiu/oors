@@ -1,14 +1,14 @@
 import express from 'express'
 import uuid from 'uuid'
-import { userList } from '../fakeData/user'
 import { orderQueue } from '../fakeData/orderQueue'
-import { User, OrderQueue } from '../model'
+import { OrderQueue } from '../model'
 import { validate_authorization } from '../util'
 
 const ReservationRouter = express.Router()
 
 // Book hotel
 ReservationRouter.post('/', (req, res) => {
+  console.log(req)
   const target_user = validate_authorization(req.headers.authorization)
   if (!target_user) {
     res.status(401).send('Please login first')

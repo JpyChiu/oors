@@ -122,7 +122,7 @@ export default function Login() {
     <div className={classes.root}>
       <Typography className={classes.title}>Happy Birthday</Typography>
       <div style={{alignItems: 'center'}}>
-        <img src={logo} className="App-logo"/>
+        <img src={logo} className="App-logo" alt=""/>
       </div>
       <Form 
         onSubmit={onSubmit}
