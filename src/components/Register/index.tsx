@@ -57,7 +57,7 @@ const useStyles = makeStyles({
   backDrop: {
     background: 'rgba(0,0,0,0.8)',
   },
-  confirmbutton: {
+  registerButton: {
     background: '#43425D',
     color: '#fff',
     width: 129,
@@ -84,7 +84,7 @@ interface State {
 }
 export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const { confirmBtnFuncion, data, enable, onClose, children } = props
-  const { backDrop, cancelButton: cancelButtonStyle, confirmbutton: confirmButtonStyle, title } = useStyles()
+  const { backDrop, cancelButton: cancelButtonStyle, registerButton: registerButtonStyle, title } = useStyles()
   const [userInfo] = useState<UsersInfo>(data)
   const {
     accountStr,
@@ -109,7 +109,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
       | typeof passwordStr
       | typeof phoneStr,
     defaultValue: string | number,
-    type: 'text' | 'number' | 'password',
+    type: 'email' | 'text' | 'number' | 'password',
   ) => {
     return (
       <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
@@ -167,7 +167,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
                 <Grid item xs={12} sm={6}>
                   {labelAndTextInput(nameStr, name, 'text')}
                   {labelAndTextInput(phoneStr, '', 'number')}
-                  {labelAndTextInput(emailStr, email, 'text')}
+                  {labelAndTextInput(emailStr, email, 'email')}
                   {labelAndTextInput(accountStr, account, 'text')}
                   {labelAndTextInput(passwordStr, '', 'password')}
                 </Grid>
@@ -175,8 +175,8 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
             </DialogContent>
             {submitError && <div className="error">{submitError}</div>}
             <DialogActions style={{ justifyContent: 'center', marginBottom: 20 }}>
-              <Button color="primary" className={confirmButtonStyle} type="submit">
-                {'confirm'}
+              <Button color="primary" className={registerButtonStyle} type="submit">
+                {'register'}
               </Button>
               <Button onClick={onClose} color="primary" className={cancelButtonStyle} autoFocus>
                 {'cancel'}

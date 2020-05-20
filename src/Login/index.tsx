@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
-import { Button, Grid, Typography } from '@material-ui/core'
+import { Button, Grid, Link, Typography } from '@material-ui/core'
 import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded'
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded'
 import { TextField } from 'final-form-material-ui'
@@ -9,18 +10,14 @@ import { TextField } from 'final-form-material-ui'
 import logo from './logo.jpg'
 
 import { UsersInfo } from '../reducers/userInfoList'
+import { StoreState } from '../reducers/rootReducer'
+import { postLogin } from '../epics/login/action'
+import { registerUser } from '../epics/register/action'
 import Register from '../components/Register/index'
-
-interface LoginProps {
-  onLogin: (email: string, password: string) => void
-  onRegister: (request: UsersInfo) => void
-  status: string
-}
 
 interface LoginInfoValues {
   email: string | null
   password: string
-  remember: boolean
 }
 
 const LoginButton = styled(Button)({
@@ -35,12 +32,10 @@ const LoginButton = styled(Button)({
   },
 })
 
-const RegisterButton = styled(Button)({
-  width: 50,
-  height: 50,
+const RegisterLink = styled(Link)({
   textAlign: 'center',
   marginLeft: 30,
-  marginTop: 30,
+  marginTop: 45,
   '&:hover': {
     backgroundColor: '#2E3B55',
     color: '#ffffff',
@@ -76,8 +71,9 @@ const useStyles = makeStyles({
   },
 })
 
-function Login(props: LoginProps) {
-  const { status, onLogin: postLogin, onRegister: registerUser } = props
+export default function Login() {
+  const dispatch = useDispatch()
+  const status = useSelector((state: StoreState) => state.login.status)
   const [loginError, setLoginError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
@@ -88,6 +84,17 @@ function Login(props: LoginProps) {
     password: '',
     phone: 9,
   }
+
+  const onLogin = (email: string, password: string) => {
+    dispatch(postLogin(email, password))
+  }
+
+  const onRegister = useCallback(
+    (userInfo: UsersInfo) => {
+      dispatch(registerUser(userInfo))
+    },
+    [dispatch],
+  )
 
   const isLoginError = useCallback(() => {
     status && status !== '' ? setLoginError(true) : setLoginError(false)
@@ -101,9 +108,15 @@ function Login(props: LoginProps) {
     setDialogOpen(false)
   }
 
-  const onSubmit = () => {
-    alert('Submit');
-  }
+  const onSubmit = useCallback(
+    (values: LoginInfoValues) => {
+      const { email, password } = values
+      if (email && password) {
+        onLogin(email, password)
+      }
+    },
+    [onLogin]
+  )
 
   return (
     <div className={classes.root}>
@@ -125,7 +138,7 @@ function Login(props: LoginProps) {
                   required
                   name="email"
                   component={TextField}
-                  type="text"
+                  type="email"
                   label={"email"}
                   defaultValue={localStorage.getItem('email')}
                 />
@@ -156,17 +169,17 @@ function Login(props: LoginProps) {
                 </LoginButton>
               </Grid>
               <Grid item container justify="flex-start" xs={6}>
-                <RegisterButton variant="outlined" onClick={handleDialogOpen}>
+                <RegisterLink onClick={handleDialogOpen}>
                   註冊
                   <Register
                     data={initUserInfo}
                     enable={dialogOpen}
                     onClose={handleDialogClose}
-                    confirmBtnFuncion={registerUser}
+                    confirmBtnFuncion={onRegister}
                   >
                     註冊
                   </Register>
-                </RegisterButton>
+                </RegisterLink>
               </Grid>
             </Grid>
           </form>
@@ -175,5 +188,3 @@ function Login(props: LoginProps) {
     </div>
   )
 }
-
-export default Login
