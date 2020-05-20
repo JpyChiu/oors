@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton } from '@material-ui/core'
@@ -9,6 +9,8 @@ import RoomDetailDialog from './roomDetailDialog'
 import { StoreState } from '../../reducers/rootReducer'
 import { Hotel } from '../../models/hotel'
 import routes from '../../routes'
+import { convertYyyymmddToDate } from '../../utils/dateConvert'
+import { postReservation } from '../../epics/reservation/actions'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +33,7 @@ export default function EnabledRoomPage() {
   const classes = useStyles()
   const history = useHistory()
   const location = useLocation()
+  const dispatch = useDispatch()
   const { enabledHotelList } = useSelector((storeState: StoreState) => ({
     enabledHotelList: storeState.hotels.enabledHotelList,
   }))
@@ -59,14 +62,15 @@ export default function EnabledRoomPage() {
   )
 
   const handleOrderClick = useCallback(() => {
-    console.log(location.search) //?startDate=yyyymm&endDate=yyyymm
     const queries = location.search.substring(1).split('&')
     if (queries.length === 2) {
       const startDate = queries[0].split('=')[1]
       const endDate = queries[1].split('=')[1]
-      console.log(startDate, endDate)
+      const days =
+        (convertYyyymmddToDate(endDate).getTime() - convertYyyymmddToDate(startDate).getTime()) / (1000 * 3600 * 24)
+      dispatch(postReservation({ startDate, endDate, hotelId: targetHotel.id, price: targetHotel.pricePerDay * days }))
     }
-  }, [location])
+  }, [location, dispatch, targetHotel])
 
   const pageBackOnClick = useCallback(() => {
     history.push(routes.home)
