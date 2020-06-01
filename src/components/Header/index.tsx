@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, ReactNode } from 'react'
 import { useHistory } from 'react-router-dom'
 import { AppBar, Button, IconButton, MenuItem, Toolbar, Typography, makeStyles } from '@material-ui/core'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
@@ -42,7 +42,7 @@ const StyledMenu = withStyles({
 const StyledMenuItem = withStyles(theme => ({
   root: {
     '&:focus': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: '#2E3B55',
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
         color: theme.palette.common.white,
       },
@@ -64,11 +64,13 @@ function Header() {
   }
 
   const handleLoginClick = useCallback(() => {
+    handleAnchorElClose()
     history.push(routes.login)
   }, [history])
 
   const handleLogoutClick = useCallback(() => {
-    // TODO: clear user session
+    // TODO: clear user
+    handleAnchorElClose()
     history.push(routes.home)
   }, [history])
 
@@ -76,10 +78,63 @@ function Header() {
     history.push(routes.home)
   }, [history])
 
-  const handleManageClick = useCallback(() => {
-    // TODO: clear user session
+  const handleOrderManageClick = useCallback(() => {
+    handleAnchorElClose()
     history.push(routes.manageOrder)
   }, [history])
+
+  const handleUserManageClick = useCallback(() => {
+    handleAnchorElClose()
+    history.push(routes.changeUserInfo)
+  }, [history])
+
+  const menuItem = [
+    {
+      text: 'User Manage',
+      onClick: handleUserManageClick,
+      iconComponent: <AccountCircleIcon fontSize="small" />,
+    },
+    {
+      text: 'Manage order',
+      onClick: handleOrderManageClick,
+      iconComponent: <AppsSharpIcon fontSize="small" />,
+    },
+    {
+      text: 'Login',
+      onClick: handleLoginClick,
+      iconComponent: <FormatIndentIncreaseSharpIcon fontSize="small" />,
+    },
+    {
+      text: 'Logout',
+      onClick: handleLogoutClick,
+      iconComponent: <FormatIndentDecreaseSharpIcon fontSize="small" />,
+    },
+  ]
+
+  interface MenuContainerProps {
+    menuItemSets: { text: string; onClick: () => void; iconComponent: ReactNode }[]
+  }
+
+  const MenuContainer = (props: MenuContainerProps): JSX.Element => {
+    return (
+      <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleAnchorElClose}
+      >
+        {props.menuItemSets.map((item, index) => {
+          return (
+            <StyledMenuItem key={index} onClick={item.onClick}>
+              <ListItemIcon>{item.iconComponent}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </StyledMenuItem>
+          )
+        })}
+      </StyledMenu>
+    )
+  }
 
   // TODO: only render Login button or Logout button
   return (
@@ -93,38 +148,7 @@ function Header() {
             <IconButton color="inherit" aria-label="open menu" onClick={handleAnchorElClick} edge="start">
               <MenuIcon />
             </IconButton>
-            <StyledMenu
-              id="customized-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleAnchorElClose}
-            >
-              <StyledMenuItem>
-                <ListItemIcon>
-                  <AccountCircleIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="User Manage" />
-              </StyledMenuItem>
-              <StyledMenuItem onClick={handleManageClick}>
-                <ListItemIcon>
-                  <AppsSharpIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Manage order" />
-              </StyledMenuItem>
-              <StyledMenuItem onClick={handleLoginClick}>
-                <ListItemIcon>
-                  <FormatIndentIncreaseSharpIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Login" />
-              </StyledMenuItem>
-              <StyledMenuItem onClick={handleLogoutClick}>
-                <ListItemIcon>
-                  <FormatIndentDecreaseSharpIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
-              </StyledMenuItem>
-            </StyledMenu>
+            <MenuContainer menuItemSets={menuItem} />
           </div>
         </div>
       </Toolbar>
