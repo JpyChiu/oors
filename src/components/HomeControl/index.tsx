@@ -5,6 +5,7 @@ import routes from '../../routes'
 import FindRoom from '../FindRoom'
 import Login from '../../Login'
 import EnabledRoomPage from '../EnabledRoomPage'
+import ManageOrder from '../ManageOrder'
 
 function HomeControl() {
   const location = useLocation()
@@ -18,7 +19,7 @@ function HomeControl() {
         <Route exact path={routes.login} component={Login} />
         {/* <Route exact path={routes.changeUserInfo} component={ChangeUserInfo} /> */}
         <Route exact path={routes.enabledRoomPage} component={EnabledRoomPage} />
-        {/* <Route exact path={manageOrder} component={ManageOrder} /> */}
+        <Route exact path={routes.manageOrder} component={ManageOrder} />
         <Redirect to={routes.login} />
       </Switch>
     </>

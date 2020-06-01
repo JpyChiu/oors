@@ -6,8 +6,70 @@ export interface ReservationState {
   userReservationList: Reservation[]
 }
 
+// Fake Data
 const initState = {
-  userReservationList: [],
+  userReservationList: [
+    {
+      id: 'test_id1',
+      hotelId: 'room_00001',
+      tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      startDate: '20200510',
+      endDate: '20200511',
+      price: 1000,
+      isPaid: true,
+      status: 'live',
+    },
+    {
+      id: 'test_id2',
+      hotelId: 'room_00001',
+      tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      startDate: '20200514',
+      endDate: '20200515',
+      price: 1000,
+      isPaid: true,
+      status: 'live',
+    },
+    {
+      id: 'test_id3',
+      hotelId: 'room_00002',
+      tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      startDate: '20200610',
+      endDate: '20200611',
+      price: 1000,
+      isPaid: true,
+      status: 'live',
+    },
+    {
+      id: 'test_id4',
+      hotelId: 'room_00001',
+      tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      startDate: '20200410',
+      endDate: '20200411',
+      price: 1000,
+      isPaid: true,
+      status: 'outdate',
+    },
+    {
+      id: 'test_id5',
+      hotelId: 'room_00002',
+      tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      startDate: '20200510',
+      endDate: '20200511',
+      price: 1000,
+      isPaid: false,
+      status: 'canceled',
+    },
+    {
+      id: 'test_id6',
+      hotelId: 'room_00002',
+      tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      startDate: '20200510',
+      endDate: '20200511',
+      price: 1000,
+      isPaid: false,
+      status: 'reject',
+    },
+  ],
 }
 
 export default function hotelReducer(state: ReservationState = initState, action: AnyAction) {
