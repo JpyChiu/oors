@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Grid, GridList, GridListTile, GridListTileBar, IconButton } from '@material-ui/core'
+import Skeleton from '@material-ui/lab/Skeleton'
 import InfoIcon from '@material-ui/icons/Info'
 
 import RoomDetailDialog from './roomDetailDialog'
@@ -34,8 +35,9 @@ export default function EnabledRoomPage() {
   const history = useHistory()
   const location = useLocation()
   const dispatch = useDispatch()
-  const { enabledHotelList } = useSelector((storeState: StoreState) => ({
+  const { enabledHotelList, isWaiting } = useSelector((storeState: StoreState) => ({
     enabledHotelList: storeState.hotels.enabledHotelList,
+    isWaiting: storeState.hotels.isWaiting,
   }))
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
   const [targetHotel, setTargetHotel] = useState<Hotel>({
@@ -126,7 +128,16 @@ export default function EnabledRoomPage() {
       <Grid container justify="center">
         <h4>Hotels</h4>
       </Grid>
-      {enabledHotelList.length === 0 ? noHotelsLayout() : hotelLayout()}
+      {isWaiting ? (
+        <Grid container justify="space-around">
+          <Skeleton variant="rect" width={400} height={200} />
+          <Skeleton variant="rect" width={400} height={200} />
+        </Grid>
+      ) : enabledHotelList.length === 0 ? (
+        noHotelsLayout()
+      ) : (
+        hotelLayout()
+      )}
     </div>
   )
 }

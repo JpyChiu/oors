@@ -1,10 +1,18 @@
 import React, { useCallback, ReactNode } from 'react'
 import { useHistory } from 'react-router-dom'
-import { AppBar, Button, IconButton, MenuItem, Toolbar, Typography, makeStyles } from '@material-ui/core'
+import {
+  AppBar,
+  Button,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Toolbar,
+  Typography,
+  makeStyles,
+} from '@material-ui/core'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import { withStyles } from '@material-ui/core/styles'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import AppsSharpIcon from '@material-ui/icons/AppsSharp'
 import FormatIndentDecreaseSharpIcon from '@material-ui/icons/FormatIndentDecreaseSharp'
 import FormatIndentIncreaseSharpIcon from '@material-ui/icons/FormatIndentIncreaseSharp'
@@ -26,6 +34,7 @@ const StyledMenu = withStyles({
 })((props: MenuProps) => (
   <Menu
     elevation={0}
+    autoFocus={false}
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: 'bottom',
@@ -41,7 +50,7 @@ const StyledMenu = withStyles({
 
 const StyledMenuItem = withStyles(theme => ({
   root: {
-    '&:focus': {
+    '&:hover': {
       backgroundColor: '#2E3B55',
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
         color: theme.palette.common.white,
@@ -144,12 +153,10 @@ function Header() {
           <Typography variant="h5">OORS</Typography>
         </Button>
         <div>
-          <div>
-            <IconButton color="inherit" aria-label="open menu" onClick={handleAnchorElClick} edge="start">
-              <MenuIcon />
-            </IconButton>
-            <MenuContainer menuItemSets={menuItem} />
-          </div>
+          <IconButton color="inherit" aria-label="open menu" onClick={handleAnchorElClick} edge="start">
+            <MenuIcon />
+          </IconButton>
+          <MenuContainer menuItemSets={menuItem} />
         </div>
       </Toolbar>
     </AppBar>
