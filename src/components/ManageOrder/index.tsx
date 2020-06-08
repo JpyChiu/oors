@@ -1,5 +1,5 @@
-import React from 'react'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { createStyles, Theme, makeStyles, styled } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -8,6 +8,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import { Button, Box, Grid, GridList } from '@material-ui/core'
+import DisplayOrderInfo from '../ManageOrder/orderDetailDialog'
+import { Reservation } from '../../models/reservation'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,6 +31,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ManageOrder() {
   const classes = useStyles()
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const tempOrderInfo: Reservation = {
+    id: 'dummyId',
+    hotelId: 'dummyHotelId',
+    tenantId: 'dummyTenantId',
+    startDate: 'dummyStartDate',
+    endDate: 'dummyEndDate',
+    price: 1000,
+    isPaid: false,
+    status: 'waiting'
+  }
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true)
+  }
+  
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+  }
 
   // return (
   //   <Grid container justify="center" style={{ margin: 10 }}>
@@ -73,7 +95,26 @@ export default function ManageOrder() {
           <Button variant="outlined">刪除</Button>
         </ListItemSecondaryAction>
       </ListItem>
+
+      <ListItem alignItems="flex-start" className={classes.item} onClick={handleDialogOpen}>
+        <ListItemAvatar>
+          <Avatar/>
+        </ListItemAvatar>
+        <ListItemText primary="測試顯示訂單" />
+        <ListItemSecondaryAction>
+          <Button variant="outlined">刪除</Button>
+        </ListItemSecondaryAction>
+      </ListItem>
+
+      <DisplayOrderInfo
+        data={tempOrderInfo}
+        enable={dialogOpen}
+        onClose={handleDialogClose}></DisplayOrderInfo>
+
     </List>
+
+    
+
     // </Box>
   )
 }
