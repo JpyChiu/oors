@@ -10,7 +10,7 @@ export const orderQueue: OrderQueue[] = [
     end_date: '20200511',
     price: 1000,
     is_paid: true,
-    status: 'live',
+    status: 'accepted',
   },
   {
     id: uuid(),
@@ -20,7 +20,7 @@ export const orderQueue: OrderQueue[] = [
     end_date: '20200515',
     price: 1000,
     is_paid: true,
-    status: 'live',
+    status: 'accepted',
   },
   {
     id: uuid(),
@@ -30,7 +30,7 @@ export const orderQueue: OrderQueue[] = [
     end_date: '20200611',
     price: 1000,
     is_paid: true,
-    status: 'live',
+    status: 'accepted',
   },
   {
     id: uuid(),
@@ -60,6 +60,6 @@ export const orderQueue: OrderQueue[] = [
     end_date: '20200511',
     price: 1000,
     is_paid: false,
-    status: 'reject',
+    status: 'rejected',
   },
 ]

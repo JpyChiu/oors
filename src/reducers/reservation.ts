@@ -78,8 +78,16 @@ export default function hotelReducer(state: ReservationState = initState, action
       return { ...state, userReservationList: { ...action.payload } }
     case RESERVATION_ACTIONS.GET_USER_RESERVATION_SUCCESS:
       return { ...state, userReservationList: action.payload }
+    case RESERVATION_ACTIONS.PUT_RESERVATION_SUCCESS:
+      return {
+        ...state,
+        userReservationList: state.userReservationList.map((reservation: Reservation) =>
+          reservation.id === action.payload.id ? action.payload : reservation,
+        ),
+      }
     case RESERVATION_ACTIONS.POST_RESERVATION_FAILED:
     case RESERVATION_ACTIONS.GET_USER_RESERVATION_FAILED:
+    case RESERVATION_ACTIONS.PUT_RESERVATION_FAILED:
     default:
       return state
   }

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
 import { Button, Grid, Link, Typography } from '@material-ui/core'
@@ -14,6 +15,7 @@ import { StoreState } from '../reducers/rootReducer'
 import { postLogin } from '../epics/login/action'
 import { registerUser } from '../epics/register/action'
 import Register from '../components/Register/index'
+import routes from '../routes'
 
 interface LoginInfoValues {
   email: string | null
@@ -77,6 +79,7 @@ export default function Login() {
   const [loginError, setLoginError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
+  const history = useHistory()
   const initUserInfo: UsersInfo = {
     account: '',
     name: '',
@@ -84,6 +87,10 @@ export default function Login() {
     password: '',
     phone: 9,
   }
+
+  const handleLogoClick = useCallback(() => {
+    history.push(routes.home)
+  }, [history])
 
   const onLogin = (email: string, password: string) => {
     dispatch(postLogin(email, password))
@@ -120,7 +127,9 @@ export default function Login() {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>Happy Birthday</Typography>
+      <Button onClick={handleLogoClick} color="inherit">
+        <Typography className={classes.title}>Happy Birthday</Typography>
+      </Button>
       <div style={{alignItems: 'center'}}>
         <img src={logo} className="App-logo" alt=""/>
       </div>
@@ -169,8 +178,7 @@ export default function Login() {
                 </LoginButton>
               </Grid>
               <Grid item container justify="flex-start" xs={6}>
-                <RegisterLink onClick={handleDialogOpen}>
-                  註冊
+                <RegisterLink onClick={handleDialogOpen}>註冊</RegisterLink>
                   <Register
                     data={initUserInfo}
                     enable={dialogOpen}
@@ -179,7 +187,6 @@ export default function Login() {
                   >
                     註冊
                   </Register>
-                </RegisterLink>
               </Grid>
             </Grid>
           </form>

@@ -7,6 +7,9 @@ export const RESERVATION_ACTIONS = {
   GET_USER_RESERVATION: '@RESERVATION/GET_USER_RESERVATION',
   GET_USER_RESERVATION_SUCCESS: '@RESERVATION/GET_USER_RESERVATION_SUCCESS',
   GET_USER_RESERVATION_FAILED: '@RESERVATION/GET_USER_RESERVATION_FAILED',
+  PUT_RESERVATION: '@RESERVATION/PUT_RESERVATION',
+  PUT_RESERVATION_SUCCESS: '@RESERVATION/PUT_RESERVATION_SUCCESS',
+  PUT_RESERVATION_FAILED: '@RESERVATION/PUT_RESERVATION_FAILED',
 }
 
 export const postReservation = (payload: ReservationPostReqBody) => ({
@@ -39,4 +42,18 @@ export const getUserReservationSuccess = (payload: Reservation[]) => ({
 
 export const getUserReservationFailed = () => ({
   type: RESERVATION_ACTIONS.GET_USER_RESERVATION_FAILED,
+})
+
+export const putReservation = (payload: { status: string; reservationId: string }) => ({
+  type: RESERVATION_ACTIONS.PUT_RESERVATION,
+  payload,
+})
+
+export const putReservationSuccess = (payload: Reservation) => ({
+  type: RESERVATION_ACTIONS.PUT_RESERVATION_SUCCESS,
+  payload,
+})
+
+export const putReservationFailed = () => ({
+  type: RESERVATION_ACTIONS.PUT_RESERVATION_FAILED,
 })

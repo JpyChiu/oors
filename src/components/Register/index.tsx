@@ -15,11 +15,12 @@ import {
 import { UsersInfo } from '../../reducers/userInfoList'
 
 enum userContent {
-  accountStr = 'account',
-  emailStr = 'email',
-  nameStr = 'name',
-  passwordStr = 'password',
-  phoneStr = 'phone',
+  accountStr = '帳號',
+  checkPasswordStr = '確認密碼',
+  emailStr = 'Email',
+  nameStr = '姓名',
+  passwordStr = '密碼',
+  phoneStr = '手機號碼',
 }
 
 export interface DialogProps {
@@ -88,6 +89,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const [userInfo] = useState<UsersInfo>(data)
   const {
     accountStr,
+    checkPasswordStr,
     emailStr,
     nameStr,
     passwordStr,
@@ -104,8 +106,9 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const labelAndTextInput = (
     key:
       | typeof accountStr
-      | typeof nameStr
+      | typeof checkPasswordStr
       | typeof emailStr
+      | typeof nameStr
       | typeof passwordStr
       | typeof phoneStr,
     defaultValue: string | number,
@@ -163,13 +166,14 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
               {children}
             </DialogTitle>
             <DialogContent style={{ padding: '57px 100px' }}>
-              <Grid container spacing={10}>
+              <Grid container justify="center" alignItems="center">
                 <Grid item xs={12} sm={6}>
                   {labelAndTextInput(nameStr, name, 'text')}
                   {labelAndTextInput(phoneStr, '', 'number')}
                   {labelAndTextInput(emailStr, email, 'email')}
                   {labelAndTextInput(accountStr, account, 'text')}
                   {labelAndTextInput(passwordStr, '', 'password')}
+                  {labelAndTextInput(checkPasswordStr, '', 'password')}
                 </Grid>
               </Grid>
             </DialogContent>

@@ -1,5 +1,5 @@
-import React from 'react'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { createStyles, Theme, makeStyles, styled } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -8,9 +8,14 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import { Button, Box, Grid, GridList } from '@material-ui/core'
+<<<<<<< HEAD
 import IconButton from '@material-ui/core/IconButton';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
+=======
+import DisplayOrderInfo from '../ManageOrder/orderDetailDialog'
+import { Reservation } from '../../models/reservation'
+>>>>>>> 57d45440f9ead21b3cf02014fa2a51f658a23f18
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ManageOrder() {
   const classes = useStyles()
+<<<<<<< HEAD
   const [dense, setDense] = React.useState(false);
   //const [secondary, setSecondary] = React.useState(false);
   const roomItem = [
@@ -70,6 +76,28 @@ export default function ManageOrder() {
       people: '4',
     },
   ]
+=======
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const tempOrderInfo: Reservation = {
+    id: 'dummyId',
+    hotelId: 'dummyHotelId',
+    tenantId: 'dummyTenantId',
+    startDate: 'dummyStartDate',
+    endDate: 'dummyEndDate',
+    price: 1000,
+    isPaid: false,
+    status: 'waiting'
+  }
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true)
+  }
+  
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+  }
+>>>>>>> 57d45440f9ead21b3cf02014fa2a51f658a23f18
 
    return (
       <Grid container justify="center" style={{ margin: 10 }}>
@@ -93,6 +121,7 @@ export default function ManageOrder() {
           </List>*/}
 
 
+<<<<<<< HEAD
           <div className={classes.demo}>
             <List dense={dense}>
             {roomItem.map((roomItem, i) => (
@@ -198,4 +227,58 @@ export default function ManageOrder() {
           </div>
       </Grid>
    )
+=======
+  return (
+    // <Box border={1} borderColor="primary.main">
+    <List className={classes.root}>
+      <ListItem alignItems="center" className={classes.item}>
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" />
+        </ListItemAvatar>
+        <ListItemText primary="Brunch this weekend?" />
+        <ListItemSecondaryAction>
+          <Button variant="outlined">刪除</Button>
+        </ListItemSecondaryAction>
+      </ListItem>
+      <ListItem alignItems="flex-start" className={classes.item}>
+        <ListItemAvatar>
+          <Avatar alt="Travis Howard" />
+        </ListItemAvatar>
+        <ListItemText primary="Summer BBQ" />
+        <ListItemSecondaryAction>
+          <Button variant="outlined">刪除</Button>
+        </ListItemSecondaryAction>
+      </ListItem>
+      <ListItem alignItems="flex-start" className={classes.item}>
+        <ListItemAvatar>
+          <Avatar alt="Cindy Baker" />
+        </ListItemAvatar>
+        <ListItemText primary="Oui Oui" />
+        <ListItemSecondaryAction>
+          <Button variant="outlined">刪除</Button>
+        </ListItemSecondaryAction>
+      </ListItem>
+
+      <ListItem alignItems="flex-start" className={classes.item} onClick={handleDialogOpen}>
+        <ListItemAvatar>
+          <Avatar/>
+        </ListItemAvatar>
+        <ListItemText primary="測試顯示訂單" />
+        <ListItemSecondaryAction>
+          <Button variant="outlined">刪除</Button>
+        </ListItemSecondaryAction>
+      </ListItem>
+
+      <DisplayOrderInfo
+        data={tempOrderInfo}
+        enable={dialogOpen}
+        onClose={handleDialogClose}></DisplayOrderInfo>
+
+    </List>
+
+    
+
+    // </Box>
+  )
+>>>>>>> 57d45440f9ead21b3cf02014fa2a51f658a23f18
 }
