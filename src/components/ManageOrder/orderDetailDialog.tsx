@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
@@ -79,14 +79,51 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     phone: 9,
   })
 
+  useEffect(() => {
+    switch (data.status) {
+      case 'canceled':
+        setUserDisplayButton(false)
+        setAdminDisplayButton(false)
+        statusText = '訂單已取消'
+        break
+      case 'rejected':
+        setUserDisplayButton(false)
+        setAdminDisplayButton(false)
+        statusText = '訂單被拒絕'
+        break
+      case 'accepted':
+        setUserDisplayButton(true)
+        setAdminDisplayButton(false)
+        statusText = '訂單已被接受'
+        break
+      case 'waiting':
+        setUserDisplayButton(true)
+        setAdminDisplayButton(true)
+        statusText = '訂單正在等待審核'
+        break
+      case 'outdate':
+          setUserDisplayButton(true)
+          setAdminDisplayButton(true)
+          statusText = '訂單已結束'
+          break
+      default:
+        setUserDisplayButton(false)
+        setAdminDisplayButton(false)
+        statusText = '錯誤'
+        break
+    }
+  }, [data.status])
+
+  
   const clickedCancelOrder = () => {
-    console.log('abc')
-    dispatch(putReservation({ status: 'canceled', reservationId: orderInfo.id }))
   }
 
   const clickedAcceptOrder = () => {}
 
-  const clickedRejectOrder = () => {}
+  const clickedRejectOrder = () => {
+    console.log('abc')
+    dispatch(putReservation({ status: 'canceled', reservationId: orderInfo.id }))
+  }
 
   const UserButtonSet = () => {
     return (
@@ -114,38 +151,11 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
   const ButtonComp = () => {
     if (true && adminDisplayButton) return <AdminButtonSet />
     else if (false && userDisplayButton) return <UserButtonSet />
-    return <text></text>
+    return <div></div>
   }
 
   const StatusDisplay = () => {
-    switch (data.status) {
-      case 'canceled':
-        setUserDisplayButton(false)
-        setAdminDisplayButton(false)
-        statusText = '訂單已取消'
-        break
-      case 'rejected':
-        setUserDisplayButton(false)
-        setAdminDisplayButton(false)
-        statusText = '訂單被拒絕'
-        break
-      case 'live':
-        setUserDisplayButton(true)
-        setAdminDisplayButton(false)
-        statusText = '訂單已被接受'
-        break
-      case 'waiting':
-        setUserDisplayButton(true)
-        setAdminDisplayButton(true)
-        statusText = '訂單正在等待審核'
-        break
-      default:
-        setUserDisplayButton(false)
-        setAdminDisplayButton(false)
-        statusText = '錯誤'
-        break
-    }
-    return <text>{statusText}</text>
+    return <div>{statusText}</div>
   }
 
   return (
@@ -175,7 +185,7 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
           />
         </Grid>
 
-        <Grid direction="column" justify="center" style={{ width: 400, marginLeft: 30 }}>
+        <Grid container direction="column" justify="center" style={{ width: 400, marginLeft: 30 }}>
           <Grid item className={textLine}>
             地點：{targetHotel.city}
           </Grid>
