@@ -10,6 +10,8 @@ import {
   postReservationFailed,
   getUserReservationSuccess,
   getUserReservationFailed,
+  putReservationSuccess,
+  putReservationFailed,
 } from './actions'
 
 const responseToModel = (resp: IncomingReservation): Reservation => ({
@@ -45,6 +47,23 @@ export const getUserReservationEpic = (action$: ActionsObservable<AnyAction>) =>
         map((res: AjaxResponse) => getUserReservationSuccess(responseToModelList(res.response))),
         catchError(() => of(getUserReservationFailed())),
       ),
+    ),
+  )
+
+export const putReservationEpic = (action$: ActionsObservable<AnyAction>) =>
+  action$.pipe(
+    ofType(RESERVATION_ACTIONS.PUT_RESERVATION),
+    exhaustMap((action: AnyAction) =>
+      ajax
+        .put(
+          `/api/reservation/${action.payload.reservationId}`,
+          { status: action.payload.status },
+          { Authorization: localStorage.getItem('sessionKey') },
+        )
+        .pipe(
+          map((res: AjaxResponse) => putReservationSuccess(responseToModel(res.response))),
+          catchError(() => of(putReservationFailed())),
+        ),
     ),
   )
 

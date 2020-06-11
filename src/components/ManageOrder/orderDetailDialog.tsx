@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
 import { TextField as _TextField, Select as _Select } from 'final-form-material-ui'
@@ -15,6 +16,7 @@ import {
 import { Reservation } from '../../models/reservation'
 import { Hotel } from '../../models/hotel'
 import { UsersInfo } from '../../reducers/userInfoList'
+import { putReservation } from '../../epics/reservation/actions'
 
 export interface DialogProps {
   data: Reservation
@@ -35,7 +37,7 @@ const useStyles = makeStyles({
   },
   textLine: {
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   button: {
     lineHeight: 0,
@@ -52,12 +54,12 @@ const useStyles = makeStyles({
 
 export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogProps>) {
   const { data, enable, onClose, children } = props
-  const { backDrop, title, textLine, button} = useStyles()
+  const dispatch = useDispatch()
+  const { backDrop, title, textLine, button } = useStyles()
   const [orderInfo] = useState<Reservation>(data)
   const [userDisplayButton, setUserDisplayButton] = useState(false)
   const [adminDisplayButton, setAdminDisplayButton] = useState(false)
   var statusText = ''
-  
 
   const [targetHotel, setTargetHotel] = useState<Hotel>({
     id: 'dummyId',
@@ -77,34 +79,41 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     phone: 9,
   })
 
-  
-
   const clickedCancelOrder = () => {
-
+    console.log('abc')
+    dispatch(putReservation({ status: 'canceled', reservationId: orderInfo.id }))
   }
 
-  const clickedAcceptOrder = () => {
-    
-  }
+  const clickedAcceptOrder = () => {}
 
-  const clickedRejectOrder= () => {
-    
-  }
+  const clickedRejectOrder = () => {}
 
   const UserButtonSet = () => {
-    return <div><button onClick={clickedCancelOrder} className={button}>取消訂單</button></div>
+    return (
+      <div>
+        <button onClick={clickedCancelOrder} className={button}>
+          取消訂單
+        </button>
+      </div>
+    )
   }
 
   const AdminButtonSet = () => {
-    return <div><button onClick={clickedAcceptOrder} className={button}>接受</button>
-    <button onClick={clickedRejectOrder} className={button}>拒絕</button></div>
+    return (
+      <div>
+        <button onClick={clickedAcceptOrder} className={button}>
+          接受
+        </button>
+        <button onClick={clickedRejectOrder} className={button}>
+          拒絕
+        </button>
+      </div>
+    )
   }
 
   const ButtonComp = () => {
-    if(true && adminDisplayButton)
-      return <AdminButtonSet />
-    else if(false && userDisplayButton)
-      return <UserButtonSet />
+    if (true && adminDisplayButton) return <AdminButtonSet />
+    else if (false && userDisplayButton) return <UserButtonSet />
     return <text></text>
   }
 
@@ -151,33 +160,42 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
         },
       }}
     >
-      <DialogTitle className={title}>
-        {targetHotel.hotelName}
-      </DialogTitle>
-      <Grid container style={{marginTop: 20, marginBottom:50 }} direction="row">
-        <Grid item style={{ width: 400, marginLeft: 30}}>
+      <DialogTitle className={title}>{targetHotel.hotelName}</DialogTitle>
+      <Grid container style={{ marginTop: 20, marginBottom: 50 }} direction="row">
+        <Grid item style={{ width: 400, marginLeft: 30 }}>
           <img
-                style={{
-                  margin: 'auto',
-                  display: 'block',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                }}
-                src={targetHotel.pictureSrc}
-                alt={targetHotel.hotelName}
-              />
+            style={{
+              margin: 'auto',
+              display: 'block',
+              maxWidth: '100%',
+              maxHeight: '100%',
+            }}
+            src={targetHotel.pictureSrc}
+            alt={targetHotel.hotelName}
+          />
         </Grid>
 
-        <Grid direction="column" justify="center" style={{ width: 400, marginLeft: 30}}>
-          <Grid item className={textLine}>地點：{targetHotel.city}</Grid>
-          <Grid item className={textLine}>入住日期：{orderInfo.startDate}</Grid>
-          <Grid item className={textLine}>退房日期：{orderInfo.endDate}</Grid>
-          <Grid item className={textLine}>人數：{targetHotel.person}</Grid>
-          <Grid item className={textLine}>訂單狀態：<StatusDisplay></StatusDisplay></Grid>
-          <Grid item className={textLine}><ButtonComp></ButtonComp></Grid>
+        <Grid direction="column" justify="center" style={{ width: 400, marginLeft: 30 }}>
+          <Grid item className={textLine}>
+            地點：{targetHotel.city}
+          </Grid>
+          <Grid item className={textLine}>
+            入住日期：{orderInfo.startDate}
+          </Grid>
+          <Grid item className={textLine}>
+            退房日期：{orderInfo.endDate}
+          </Grid>
+          <Grid item className={textLine}>
+            人數：{targetHotel.person}
+          </Grid>
+          <Grid item className={textLine}>
+            訂單狀態：<StatusDisplay></StatusDisplay>
+          </Grid>
+          <Grid item className={textLine}>
+            <ButtonComp></ButtonComp>
+          </Grid>
         </Grid>
       </Grid>
-
     </Dialog>
   )
 }
