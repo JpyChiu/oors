@@ -32,6 +32,9 @@ ReservationRouter.get('/retrieve_user_orders', (req, res) => {
     res.status(401).send('Please login first')
   } else {
     const user_order_list = orderQueue.filter(order => {
+      if (target_user.role === 'admin') {
+        return order
+      }
       return order.tenant_id === target_user.id
     })
     res.send(user_order_list)

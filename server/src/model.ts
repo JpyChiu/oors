@@ -5,7 +5,7 @@ export interface User {
   password: string
   phone: string
   session: string
-  role: string
+  role: 'user' | 'admin'
 }
 
 export interface Hotel {
@@ -26,5 +26,5 @@ export interface OrderQueue {
   end_date: string
   price: number
   is_paid: boolean
-  status: string
+  status: 'unApproved' | 'live' | 'outdate' | 'reject' | 'canceled'
 }

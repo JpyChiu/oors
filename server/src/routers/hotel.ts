@@ -6,10 +6,11 @@ import { convert_yyyymmdd_to_date } from '../util'
 const HotelRouter = express.Router()
 
 // Retrieve all hotels
-HotelRouter.get('/', (req, res) => {
-  res.send(hotelList)
-})
+// HotelRouter.get('/', (req, res) => {
+//   res.send(hotelList)
+// })
 
+// Retrieve all cities and person
 HotelRouter.get('/count', (req, res) => {
   const hotel_props = {
     cities: hotelList

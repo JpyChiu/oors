@@ -2,22 +2,27 @@ import express from 'express'
 import uuid from 'uuid/v4'
 import { userList } from '../fakeData/user'
 import { User } from '../model'
+import { validate_authorization } from '../util'
 
 const UserRouter = express.Router()
 
 // Retrieve All user API
-UserRouter.get('/', (req, res) => {
-  res.send(userList)
-})
+// UserRouter.get('/', (req, res) => {
+//   res.send(userList)
+// })
 
 // Retrieve user API
 UserRouter.get('/:id', (req, res) => {
-  const req_id = req.params.id
-  const target_user = userList.find(user => user.id === req_id)
-  if (!target_user) {
-    res.status(404).send('not exist user')
+  if (validate_authorization(req.headers.authorization)) {
+    const req_id = req.params.id
+    const target_user = userList.find(user => user.id === req_id)
+    if (!target_user) {
+      res.status(404).send('not exist user')
+    } else {
+      res.send(target_user)
+    }
   } else {
-    res.send(target_user)
+    res.status(401).send('Please login first')
   }
 })
 
@@ -33,7 +38,7 @@ UserRouter.post('/', (req, res) => {
   res.send(new_user)
 })
 
-// TODO: login API
+// login API
 UserRouter.post('/login', (req, res) => {
   const target_user = userList.find(user => user.email === req.body.email)
   if (!target_user) {
@@ -50,20 +55,24 @@ UserRouter.post('/login', (req, res) => {
 
 // Update user API
 UserRouter.put('/:id', (req, res) => {
-  const req_id = req.params.id
-  let targetIdx = -1
-  userList.find((user, idx) => {
-    if (user.id === req_id) {
-      userList[idx] = {
-        ...userList[idx],
-        ...req.body,
+  if (validate_authorization(req.headers.authorization)) {
+    const req_id = req.params.id
+    let targetIdx = -1
+    userList.find((user, idx) => {
+      if (user.id === req_id) {
+        userList[idx] = {
+          ...userList[idx],
+          ...req.body,
+        }
+        targetIdx = idx
+        return true
       }
-      targetIdx = idx
-      return true
-    }
-    return false
-  })
-  res.send(userList[targetIdx])
+      return false
+    })
+    res.send(userList[targetIdx])
+  } else {
+    res.status(401).send('Please login first')
+  }
 })
 
 export default UserRouter
