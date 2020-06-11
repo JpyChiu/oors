@@ -26,5 +26,5 @@ export interface OrderQueue {
   end_date: string
   price: number
   is_paid: boolean
-  status: 'unApproved' | 'live' | 'outdate' | 'reject' | 'canceled'
+  status: 'waiting' | 'accepted' | 'outdate' | 'rejected' | 'canceled'
 }
