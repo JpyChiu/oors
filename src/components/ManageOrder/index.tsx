@@ -42,32 +42,44 @@ export default function ManageOrder() {
   //const [secondary, setSecondary] = React.useState(false);
   const roomItem = [
     {
-      text: 'Subway',
+      hotelId: 'Subway',
       city: 'Taipei',
-      liveDate: '2020/05/14',
+      startDate: '2020/05/14',
       endDate: '2020/05/17',
-      people: '2',
+      people: 2,
+      price: 1000,
+      isPaid: true,
+      status: '入住中',
     },
     {
-      text: 'KFC',
+      hotelId: 'KFC',
       city: 'NewYork',
-      liveDate: '2020/05/11',
+      startDate: '2020/05/11',
       endDate: '2020/05/14',
-      people: '4',
+      people: 4,
+      price: 1000,
+      isPaid: true,
+      status: '入住中',
     },
     {
-      text: '鳳梨屋',
+      hotelId: '鳳梨屋',
       city: 'Paris',
-      liveDate: '2020/05/10',
+      startDate: '2020/05/10',
       endDate: '2020/05/12',
-      people: '3',
+      people: 3,
+      price: 1000,
+      isPaid: true,
+      status: '入住中',
     },
     {
-      text: 'Life',
+      hotelId: 'Life',
       city: 'Tokyo',
-      liveDate: '2020/05/10',
+      startDate: '2020/05/10',
       endDate: '2020/05/15',
-      people: '4',
+      people: 4,
+      price: 1000,
+      isPaid: true,
+      status: '入住中',
     },
   ]
 
@@ -103,7 +115,7 @@ export default function ManageOrder() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={`地點: ${roomItem.city} 房間名稱: ${roomItem.text} 入住日期: ${roomItem.liveDate} 搬出日期: ${roomItem.endDate} 人數: ${roomItem.people}`}
+                primary={`地點: ${roomItem.city} 房間名稱: ${roomItem.hotelId} 入住日期: ${roomItem.startDate} 搬出日期: ${roomItem.endDate} 人數: ${roomItem.people}`}
                 //secondary={secondary ? 'Secondary text' : null}
               />
               <ListItemSecondaryAction>
