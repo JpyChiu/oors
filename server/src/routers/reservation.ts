@@ -1,6 +1,7 @@
 import express from 'express'
 import uuid from 'uuid'
 import { orderQueue } from '../fakeData/orderQueue'
+import { hotelList } from '../fakeData/hotel'
 import { OrderQueue } from '../model'
 import { validate_authorization } from '../util'
 
@@ -36,6 +37,15 @@ ReservationRouter.get('/retrieve_user_orders', (req, res) => {
         return order
       }
       return order.tenant_id === target_user.id
+    })
+    user_order_list.map(order => {
+      const target_hotel = hotelList.find(hotel => order.hotel_id === hotel.id)
+      const map_user_order = {
+        ...order,
+        hotel_info: { id: order.hotel_id, person: target_hotel?.person, city: target_hotel?.city },
+      }
+      delete map_user_order.hotel_id
+      return map_user_order
     })
     res.send(user_order_list)
   }

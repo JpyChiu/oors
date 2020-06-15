@@ -16,7 +16,9 @@ import {
 
 const responseToModel = (resp: IncomingReservation): Reservation => ({
   id: resp.id,
-  hotelId: resp.hotel_id,
+  hotelId: resp.hotel_info?.id ? resp.hotel_info.id : null,
+  hotelPerson: resp.hotel_info?.person,
+  hotelCity: resp.hotel_info?.city,
   tenantId: resp.tenant_id,
   startDate: resp.start_date,
   endDate: resp.end_date,

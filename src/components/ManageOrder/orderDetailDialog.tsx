@@ -102,10 +102,10 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
         statusText = '訂單正在等待審核'
         break
       case 'outdate':
-          setUserDisplayButton(true)
-          setAdminDisplayButton(true)
-          statusText = '訂單已結束'
-          break
+        setUserDisplayButton(true)
+        setAdminDisplayButton(true)
+        statusText = '訂單已結束'
+        break
       default:
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
@@ -114,9 +114,7 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     }
   }, [data.status])
 
-  
-  const clickedCancelOrder = () => {
-  }
+  const clickedCancelOrder = () => {}
 
   const clickedAcceptOrder = () => {}
 

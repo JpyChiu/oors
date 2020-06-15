@@ -1,6 +1,7 @@
 export interface IncomingReservation {
   id: string
-  hotel_id: string
+  hotel_info?: { id: string; person: number; city: string }
+  hotel_id?: string
   tenant_id: string
   start_date: string
   end_date: string
@@ -11,7 +12,9 @@ export interface IncomingReservation {
 
 export interface Reservation {
   id: string
-  hotelId: string
+  hotelId: string | null
+  hotelPerson?: number
+  hotelCity?: string
   tenantId: string
   startDate: string
   endDate: string

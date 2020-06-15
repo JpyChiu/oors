@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { createStyles, Theme, makeStyles, styled } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -8,9 +8,11 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 import { Button, Box, Grid, GridList } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton';
-import FolderIcon from '@material-ui/icons/Folder';
-import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton'
+import FolderIcon from '@material-ui/icons/Folder'
+import DeleteIcon from '@material-ui/icons/Delete'
+
+import DisplayOrderInfo from '../ManageOrder/orderDetailDialog'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,16 +36,41 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-
-
 export default function ManageOrder() {
   const classes = useStyles()
-  const [dense, setDense] = React.useState(false);
-  //const [secondary, setSecondary] = React.useState(false);
+  const [dense, setDense] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [targetReservation, setTargetReservation] = useState({
+    id: 'dummyId',
+    hotelId: 'dummyHotelId',
+    city: 'dummyCity',
+    people: 1,
+    tenantId: 'dummyTenantId',
+    startDate: '2020/01/01',
+    endDate: '2020/01/01',
+    price: 1000,
+    isPaid: false,
+    status: 'waiting',
+  })
+
+  const handleDialogOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    const findTargetReservation = roomItem.find(
+      reservation => reservation.id === event.currentTarget.dataset['reservationId'],
+    )
+    setTargetReservation(findTargetReservation!)
+    setDialogOpen(true)
+  }, [])
+
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+  }
+
   const roomItem = [
     {
+      id: '1',
       hotelId: 'Subway',
       city: 'Taipei',
+      tenantId: 'Joy',
       startDate: '2020/05/14',
       endDate: '2020/05/17',
       people: 2,
@@ -52,8 +79,10 @@ export default function ManageOrder() {
       status: '入住中',
     },
     {
+      id: '2',
       hotelId: 'KFC',
       city: 'NewYork',
+      tenantId: 'Adin',
       startDate: '2020/05/11',
       endDate: '2020/05/14',
       people: 4,
@@ -62,8 +91,10 @@ export default function ManageOrder() {
       status: '入住中',
     },
     {
+      id: '3',
       hotelId: '鳳梨屋',
       city: 'Paris',
+      tenantId: 'Andrew',
       startDate: '2020/05/10',
       endDate: '2020/05/12',
       people: 3,
@@ -72,8 +103,10 @@ export default function ManageOrder() {
       status: '入住中',
     },
     {
+      id: '4',
       hotelId: 'Life',
       city: 'Tokyo',
+      tenantId: 'Yachi',
       startDate: '2020/05/10',
       endDate: '2020/05/15',
       people: 4,
@@ -83,32 +116,18 @@ export default function ManageOrder() {
     },
   ]
 
-   return (
-      <Grid container justify="center" style={{ margin: 10 }}>
-        <Grid item>
-          <Typography color="textPrimary" variant="h4">
-            訂單管理
-          </Typography>
-        </Grid>
-        <Grid item container >
-        </Grid>
-        {/*<List className={classes.root}>
-            <ListItem alignItems="center" className={classes.item}>
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" />
-              </ListItemAvatar>
-            <ListItemText primary="Brunch this weekend?" />
-              <ListItemSecondaryAction>
-                <Button variant="outlined">刪除</Button>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>*/}
-
-
-          <div className={classes.demo}>
-            <List dense={dense}>
-            {roomItem.map((roomItem, i) => (
-              <ListItem>
+  return (
+    <Grid container justify="center" style={{ margin: 10 }}>
+      <Grid item>
+        <Typography color="textPrimary" variant="h4">
+          訂單管理
+        </Typography>
+      </Grid>
+      <Grid item container></Grid>
+      <div className={classes.demo}>
+        <List dense={dense}>
+          {roomItem.map((roomItem, i) => (
+            <ListItem button key={i} data-reservation-id={roomItem.id} onClick={handleDialogOpen}>
               <ListItemAvatar>
                 <Avatar>
                   <FolderIcon />
@@ -124,90 +143,10 @@ export default function ManageOrder() {
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
-            ))
-            }
-              {/*<ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="地點:Taipei &nbsp;&nbsp;&nbsp; 房間名稱:Subway &nbsp;&nbsp;&nbsp; 入住日期:2020/05/14 &nbsp;&nbsp;&nbsp; 搬出日期:2020/05/17 &nbsp;&nbsp;&nbsp; 人數:2"
-                  //secondary={secondary ? 'Secondary text' : null}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="地點:Taipei &nbsp;&nbsp;&nbsp; 房間名稱:Subway &nbsp;&nbsp;&nbsp; 入住日期:2020/05/14 &nbsp;&nbsp;&nbsp; 搬出日期:2020/05/17 &nbsp;&nbsp;&nbsp; 人數:2"
-                  //secondary={secondary ? 'Secondary text' : null}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="地點:Taipei &nbsp;&nbsp;&nbsp; 房間名稱:Subway &nbsp;&nbsp;&nbsp; 入住日期:2020/05/14 &nbsp;&nbsp;&nbsp; 搬出日期:2020/05/17 &nbsp;&nbsp;&nbsp; 人數:2"
-                  //secondary={secondary ? 'Secondary text' : null}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="地點:Taipei &nbsp;&nbsp;&nbsp; 房間名稱:Subway &nbsp;&nbsp;&nbsp; 入住日期:2020/05/14 &nbsp;&nbsp;&nbsp; 搬出日期:2020/05/17 &nbsp;&nbsp;&nbsp; 人數:2"
-                  //secondary={secondary ? 'Secondary text' : null}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary="地點:Taipei &nbsp;&nbsp;&nbsp; 房間名稱:Subway &nbsp;&nbsp;&nbsp; 入住日期:2020/05/14 &nbsp;&nbsp;&nbsp; 搬出日期:2020/05/17 &nbsp;&nbsp;&nbsp; 人數:2"
-                  //secondary={secondary ? 'Secondary text' : null}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>*/}
-            </List>
-          </div>
-      </Grid>
-   )
+          ))}
+        </List>
+      </div>
+      <DisplayOrderInfo data={targetReservation} enable={dialogOpen} onClose={handleDialogClose}></DisplayOrderInfo>
+    </Grid>
+  )
 }
