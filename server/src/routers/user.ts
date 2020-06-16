@@ -40,15 +40,15 @@ UserRouter.post('/', (req, res) => {
 
 // login API
 UserRouter.post('/login', (req, res) => {
-  const target_user = userList.find(user => user.email === req.body.email)
-  if (!target_user) {
+  const target_user_index = userList.findIndex(user => user.email === req.body.email)
+  if (target_user_index === -1) {
     res.status(401).send('This email is not register')
   } else {
-    if (target_user.password !== req.body.password) {
+    if (userList[target_user_index].password !== req.body.password) {
       res.status(401).send('This password is wrong')
     } else {
-      target_user.session = new Date().valueOf().toString()
-      res.send(target_user)
+      userList[target_user_index].session = new Date().valueOf().toString()
+      res.send(userList[target_user_index])
     }
   }
 })
