@@ -92,9 +92,12 @@ export default function Login() {
     history.push(routes.home)
   }, [history])
 
-  const onLogin = (email: string, password: string) => {
-    dispatch(postLogin(email, password))
-  }
+  const onLogin = useCallback(
+    (email: string, password: string) => {
+      dispatch(postLogin(email, password))
+    }, 
+    [dispatch],
+  )
 
   const onRegister = useCallback(
     (userInfo: UsersInfo) => {

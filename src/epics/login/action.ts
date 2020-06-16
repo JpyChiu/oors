@@ -17,7 +17,6 @@ export const postLoginSuccess = (data: any) => ({
     payload: data,
 })
 
-export const postLoginFailed = (data: any) => ({
+export const postLoginFailed = () => ({
     type: LOGIN_ACTIONS.POST_LOGIN_FAILED,
-    payload: data,
 })
