@@ -100,7 +100,6 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
     account,
     email,
     name,
-    phone,
   } = userInfo
 
   const labelAndTextInput = (
@@ -130,11 +129,17 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
     )
   }
 
+  const normalizePhone = (value: string) => {
+    if (!value) {
+      return value
+    }
+    return value.replace(/[^\d]/g, '')
+  }
+
   const labelAndPhoneInput = (
     key:
       | typeof phoneStr,
     defaultValue: string | number,
-    type: 'number',
   ) => {
     return (
       <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
@@ -145,7 +150,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
             name={key}
             component={TextField as React.FC}
             type="text"
-            pattern="~R/\A[0-9]{10}\z/"
+            parse={normalizePhone}
             variant="outlined"
             defaultValue={defaultValue}
           />
@@ -195,7 +200,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
               <Grid container justify="center" alignItems="center">
                 <Grid item xs={12} sm={6}>
                   {labelAndTextInput(nameStr, name, 'text')}
-                  {labelAndPhoneInput(phoneStr, phone, 'number')}
+                  {labelAndPhoneInput(phoneStr, '')}
                   {labelAndTextInput(emailStr, email, 'email')}
                   {labelAndTextInput(accountStr, account, 'text')}
                   {labelAndTextInput(passwordStr, '', 'password')}
