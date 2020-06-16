@@ -59,7 +59,7 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
   const [orderInfo] = useState<Reservation>(data)
   const [userDisplayButton, setUserDisplayButton] = useState(false)
   const [adminDisplayButton, setAdminDisplayButton] = useState(false)
-  var statusText = ''
+  const [statusText, setStatusText] = useState('')
 
   const [targetHotel, setTargetHotel] = useState<Hotel>({
     id: 'dummyId',
@@ -80,39 +80,39 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
   })
 
   useEffect(() => {
-    switch (data.status) {
+    switch (orderInfo.status) {
       case 'canceled':
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
-        statusText = '訂單已取消'
+        setStatusText('訂單已取消') 
         break
       case 'rejected':
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
-        statusText = '訂單被拒絕'
+        setStatusText('訂單被拒絕') 
         break
       case 'accepted':
         setUserDisplayButton(true)
         setAdminDisplayButton(false)
-        statusText = '訂單已被接受'
+        setStatusText('訂單已被接受') 
         break
       case 'waiting':
         setUserDisplayButton(true)
         setAdminDisplayButton(true)
-        statusText = '訂單正在等待審核'
+        setStatusText('訂單正在等待審核') 
         break
       case 'outdate':
         setUserDisplayButton(true)
         setAdminDisplayButton(true)
-        statusText = '訂單已結束'
+        setStatusText('訂單已結束') 
         break
       default:
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
-        statusText = '錯誤'
+        setStatusText('錯誤') 
         break
     }
-  }, [data.status])
+  }, [orderInfo.status])
 
   const clickedCancelOrder = () => {}
 
