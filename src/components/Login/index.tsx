@@ -10,12 +10,12 @@ import { TextField } from 'final-form-material-ui'
 
 import logo from './logo.jpg'
 
-import { UsersInfo } from '../reducers/userInfoList'
-import { StoreState } from '../reducers/rootReducer'
-import { postLogin } from '../epics/login/action'
-import { registerUser } from '../epics/register/action'
-import Register from '../components/Register/index'
-import routes from '../routes'
+import { UsersInfo } from '../../reducers/userInfoList'
+import { StoreState } from '../../reducers/rootReducer'
+import { postLogin } from '../../epics/login/action'
+import { registerUser } from '../../epics/register/action'
+import Register from '../Register/index'
+import routes from '../../routes'
 
 interface LoginInfoValues {
   email: string | null
@@ -95,7 +95,7 @@ export default function Login() {
   const onLogin = useCallback(
     (email: string, password: string) => {
       dispatch(postLogin(email, password))
-    }, 
+    },
     [dispatch],
   )
 
@@ -113,7 +113,7 @@ export default function Login() {
   const handleDialogOpen = () => {
     setDialogOpen(true)
   }
-  
+
   const handleDialogClose = () => {
     setDialogOpen(false)
   }
@@ -125,7 +125,7 @@ export default function Login() {
         onLogin(email, password)
       }
     },
-    [onLogin]
+    [onLogin],
   )
 
   return (
@@ -133,10 +133,10 @@ export default function Login() {
       <Button onClick={handleLogoClick} color="inherit">
         <Typography className={classes.title}>Happy Birthday</Typography>
       </Button>
-      <div style={{alignItems: 'center'}}>
-        <img src={logo} className="App-logo" alt=""/>
+      <div style={{ alignItems: 'center' }}>
+        <img src={logo} className="App-logo" alt="" />
       </div>
-      <Form 
+      <Form
         onSubmit={onSubmit}
         render={({ submitError, handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit}>
@@ -151,7 +151,7 @@ export default function Login() {
                   name="email"
                   component={TextField}
                   type="email"
-                  label={"email"}
+                  label={'email'}
                   defaultValue={localStorage.getItem('email')}
                 />
               </Grid>
@@ -167,7 +167,7 @@ export default function Login() {
                   name="password"
                   component={TextField}
                   type="password"
-                  label={"password"}
+                  label={'password'}
                 />
               </Grid>
             </Grid>
@@ -182,14 +182,14 @@ export default function Login() {
               </Grid>
               <Grid item container justify="flex-start" xs={6}>
                 <RegisterLink onClick={handleDialogOpen}>註冊</RegisterLink>
-                  <Register
-                    data={initUserInfo}
-                    enable={dialogOpen}
-                    onClose={handleDialogClose}
-                    confirmBtnFuncion={onRegister}
-                  >
-                    註冊
-                  </Register>
+                <Register
+                  data={initUserInfo}
+                  enable={dialogOpen}
+                  onClose={handleDialogClose}
+                  confirmBtnFuncion={onRegister}
+                >
+                  註冊
+                </Register>
               </Grid>
             </Grid>
           </form>
