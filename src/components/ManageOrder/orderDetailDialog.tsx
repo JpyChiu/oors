@@ -1,17 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, {useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Form, Field } from 'react-final-form'
-import { makeStyles, styled } from '@material-ui/styles'
-import { TextField as _TextField, Select as _Select } from 'final-form-material-ui'
+import { makeStyles } from '@material-ui/styles'
 import {
-  Button,
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText as _DialogContentText,
   DialogTitle,
   Grid,
-  Typography,
 } from '@material-ui/core'
 import { Reservation } from '../../models/reservation'
 import { Hotel } from '../../models/hotel'
@@ -53,7 +46,7 @@ const useStyles = makeStyles({
 })
 
 export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogProps>) {
-  const { data, enable, onClose, children } = props
+  const { data, enable, onClose } = props
   const dispatch = useDispatch()
   const { backDrop, title, textLine, button } = useStyles()
   const [orderInfo] = useState<Reservation>(data)
@@ -78,6 +71,7 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     password: 'dummyPassword',
     phone: 9,
   })
+  const isAdmin = true;
 
   useEffect(() => {
     switch (orderInfo.status) {
@@ -114,13 +108,16 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     }
   }, [orderInfo.status])
 
-  const clickedCancelOrder = () => {}
+  const clickedCancelOrder = () => {
+    dispatch(putReservation({ status: 'canceled', reservationId: orderInfo.id }))
+  }
 
-  const clickedAcceptOrder = () => {}
+  const clickedAcceptOrder = () => {
+    dispatch(putReservation({ status: 'accepted', reservationId: orderInfo.id }))
+  }
 
   const clickedRejectOrder = () => {
-    console.log('abc')
-    dispatch(putReservation({ status: 'canceled', reservationId: orderInfo.id }))
+    dispatch(putReservation({ status: 'rejected', reservationId: orderInfo.id }))
   }
 
   const UserButtonSet = () => {
@@ -147,14 +144,11 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
   }
 
   const ButtonComp = () => {
-    if (true && adminDisplayButton) return <AdminButtonSet />
-    else if (false && userDisplayButton) return <UserButtonSet />
+    if (isAdmin && adminDisplayButton) return <AdminButtonSet />
+    else if (!isAdmin && userDisplayButton) return <UserButtonSet />
     return <div></div>
   }
 
-  const StatusDisplay = () => {
-    return <div>{statusText}</div>
-  }
 
   return (
     <Dialog
@@ -197,7 +191,7 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
             人數：{targetHotel.person}
           </Grid>
           <Grid item className={textLine}>
-            訂單狀態：<StatusDisplay></StatusDisplay>
+            訂單狀態：{statusText}
           </Grid>
           <Grid item className={textLine}>
             <ButtonComp></ButtonComp>
