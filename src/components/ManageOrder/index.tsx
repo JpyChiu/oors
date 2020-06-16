@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { createStyles, Theme, makeStyles, styled } from '@material-ui/core/styles'
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -7,7 +7,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
-import { Button, Box, Grid, GridList } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import FolderIcon from '@material-ui/icons/Folder'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ManageOrder() {
   const classes = useStyles()
-  const [dense, setDense] = useState(false)
+  const [dense] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [targetReservation, setTargetReservation] = useState({
     id: 'dummyId',
@@ -52,18 +52,6 @@ export default function ManageOrder() {
     isPaid: false,
     status: 'waiting',
   })
-
-  const handleDialogOpen = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    const findTargetReservation = roomItem.find(
-      reservation => reservation.id === event.currentTarget.dataset['reservationId'],
-    )
-    setTargetReservation(findTargetReservation!)
-    setDialogOpen(true)
-  }, [])
-
-  const handleDialogClose = () => {
-    setDialogOpen(false)
-  }
 
   const roomItem = [
     {
@@ -115,6 +103,21 @@ export default function ManageOrder() {
       status: '入住中',
     },
   ]
+
+  const handleDialogOpen = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      const findTargetReservation = roomItem.find(
+        reservation => reservation.id === event.currentTarget.dataset['reservationId'],
+      )
+      setTargetReservation(findTargetReservation!)
+      setDialogOpen(true)
+    },
+    [roomItem],
+  )
+
+  const handleDialogClose = () => {
+    setDialogOpen(false)
+  }
 
   return (
     <Grid container justify="center" style={{ margin: 10 }}>

@@ -81,6 +81,8 @@ function Header() {
     // TODO: clear user
     handleAnchorElClose()
     history.push(routes.home)
+    localStorage.removeItem('sessionKey')
+    localStorage.removeItem('userName')
   }, [history])
 
   const handleLogoClick = useCallback(() => {
@@ -152,6 +154,7 @@ function Header() {
         <Button onClick={handleLogoClick} color="inherit">
           <Typography variant="h5">OORS</Typography>
         </Button>
+        <Typography variant="button">您好~{localStorage.getItem('userName')}</Typography>
         <div>
           <IconButton color="inherit" aria-label="open menu" onClick={handleAnchorElClick} edge="start">
             <MenuIcon />

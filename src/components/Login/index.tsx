@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Form, Field } from 'react-final-form'
@@ -12,10 +12,11 @@ import logo from './logo.jpg'
 
 import { UsersInfo } from '../../reducers/userInfoList'
 import { StoreState } from '../../reducers/rootReducer'
-import { postLogin } from '../../epics/login/action'
+import { postLogin, LOGIN_ACTIONS } from '../../epics/login/action'
 import { registerUser } from '../../epics/register/action'
 import Register from '../Register/index'
 import routes from '../../routes'
+import responseUtil from '../../utils/responseUtil'
 
 interface LoginInfoValues {
   email: string | null
@@ -75,7 +76,8 @@ const useStyles = makeStyles({
 
 export default function Login() {
   const dispatch = useDispatch()
-  const status = useSelector((state: StoreState) => state.login.status)
+  // const isLoginFailed = useSelector((state: StoreState) => state.login.isLoginFailed)
+  const [test, setTest] = useState(false)
   const [loginError, setLoginError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
@@ -88,12 +90,43 @@ export default function Login() {
     phone: 9,
   }
 
+  useEffect(() => {
+    console.log(history)
+    console.log(localStorage.getItem('sessionKey'))
+    console.log(test)
+    setTest(false)
+    if (localStorage.getItem('sessionKey')) {
+      history.push(routes.home)
+    }
+
+    // TODO: can not get in this useEffect
+    const sub = responseUtil.subscribe(
+      {
+        successType: [LOGIN_ACTIONS.POST_LOGIN_SUCCESS],
+      },
+      {
+        next: (resp: any) => {
+          console.log('in sub')
+          localStorage.setItem('sessionKey', resp.session)
+          localStorage.setItem('userName', resp.name)
+          history.goBack()
+        },
+        error: () => {
+          setLoginError(true)
+        },
+      },
+    )
+
+    return () => sub.unsubscribe()
+  }, [history, test])
+
   const handleLogoClick = useCallback(() => {
     history.push(routes.home)
   }, [history])
 
   const onLogin = useCallback(
     (email: string, password: string) => {
+      setTest(true)
       dispatch(postLogin(email, password))
     },
     [dispatch],
@@ -105,10 +138,6 @@ export default function Login() {
     },
     [dispatch],
   )
-
-  const isLoginError = useCallback(() => {
-    status && status !== '' ? setLoginError(true) : setLoginError(false)
-  }, [status])
 
   const handleDialogOpen = () => {
     setDialogOpen(true)
@@ -172,8 +201,7 @@ export default function Login() {
               </Grid>
             </Grid>
             {submitError && <div className="error">{submitError}</div>}
-            {isLoginError()}
-            {loginError && <Grid className={classes.errorMessage}>帳號或密碼錯誤</Grid>}
+            {loginError === true && <Grid className={classes.errorMessage}>帳號或密碼錯誤</Grid>}
             <Grid container>
               <Grid item container justify="flex-end" xs={6}>
                 <LoginButton variant="outlined" type="submit" disabled={submitting}>
