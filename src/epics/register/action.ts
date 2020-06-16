@@ -16,7 +16,6 @@ export const registerUserSuccess = (data: UsersInfo) => ({
   payload: data,
 })
 
-export const registerUserFailure = (data: any) => ({
+export const registerUserFailure = () => ({
   type: REGISTER_ACTIONS.REGISTER_USER_FAILURE,
-  payload: data,
 })

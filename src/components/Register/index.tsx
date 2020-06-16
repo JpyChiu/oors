@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
-import { TextField as _TextField, Select as _Select } from 'final-form-material-ui'
+import { TextField as _TextField } from 'final-form-material-ui'
 import {
   Button,
   Dialog,
@@ -109,10 +109,9 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
       | typeof checkPasswordStr
       | typeof emailStr
       | typeof nameStr
-      | typeof passwordStr
-      | typeof phoneStr,
+      | typeof passwordStr,
     defaultValue: string | number,
-    type: 'email' | 'text' | 'number' | 'password',
+    type: 'email' | 'text' | 'password',
   ) => {
     return (
       <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
@@ -123,6 +122,30 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
             name={key}
             component={TextField as React.FC}
             type={type}
+            variant="outlined"
+            defaultValue={defaultValue}
+          />
+        </Grid>
+      </Grid>
+    )
+  }
+
+  const labelAndPhoneInput = (
+    key:
+      | typeof phoneStr,
+    defaultValue: string | number,
+    type: 'number',
+  ) => {
+    return (
+      <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
+        {renderLabel(snakeToCamel(key))}
+        <Grid item sm={7}>
+          <Field
+            required
+            name={key}
+            component={TextField as React.FC}
+            type="text"
+            pattern="~R/\A[0-9]{10}\z/"
             variant="outlined"
             defaultValue={defaultValue}
           />
@@ -142,9 +165,12 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const snakeToCamel = (str: string) =>
     str.replace(/([_][a-z])/g, (group: string) => group.toUpperCase().replace('_', ''))
 
-  const onSubmit = () => {
-    alert('Submit');
-  }
+  const onSubmit = useCallback((value: UsersInfo) => {
+    console.log(value)
+    confirmBtnFuncion(userInfo)
+  },
+  [confirmBtnFuncion, userInfo],
+  )
 
   return (
     <Dialog
@@ -169,7 +195,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
               <Grid container justify="center" alignItems="center">
                 <Grid item xs={12} sm={6}>
                   {labelAndTextInput(nameStr, name, 'text')}
-                  {labelAndTextInput(phoneStr, '', 'number')}
+                  {labelAndPhoneInput(phoneStr, phone, 'number')}
                   {labelAndTextInput(emailStr, email, 'email')}
                   {labelAndTextInput(accountStr, account, 'text')}
                   {labelAndTextInput(passwordStr, '', 'password')}
