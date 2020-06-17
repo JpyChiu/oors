@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
@@ -10,8 +10,7 @@ import { TextField } from 'final-form-material-ui'
 
 import logo from './logo.jpg'
 
-import { UsersInfo } from '../../reducers/userInfoList'
-import { StoreState } from '../../reducers/rootReducer'
+import { UsersForm } from '../../models/user'
 import { postLogin, LOGIN_ACTIONS } from '../../epics/login/action'
 import { registerUser } from '../../epics/register/action'
 import Register from '../Register/index'
@@ -81,8 +80,7 @@ export default function Login() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
   const history = useHistory()
-  const initUserInfo: UsersInfo = {
-    account: '',
+  const initUserForm: UsersForm = {
     name: '',
     email: '',
     password: '',
@@ -122,16 +120,14 @@ export default function Login() {
     history.push(routes.home)
   }, [history])
 
-  const onLogin = useCallback(
-    (email: string, password: string) => {
+  const onLogin = useCallback((email: string, password: string) => {
       dispatch(postLogin(email, password))
     },
     [dispatch],
   )
 
-  const onRegister = useCallback(
-    (userInfo: UsersInfo) => {
-      dispatch(registerUser(userInfo))
+  const onRegister = useCallback((userForm: UsersForm) => {
+      dispatch(registerUser(userForm))
     },
     [dispatch],
   )
@@ -208,7 +204,7 @@ export default function Login() {
               <Grid item container justify="flex-start" xs={6}>
                 <RegisterLink onClick={handleDialogOpen}>註冊</RegisterLink>
                 <Register
-                  data={initUserInfo}
+                  data={initUserForm}
                   enable={dialogOpen}
                   onClose={handleDialogClose}
                   confirmBtnFuncion={onRegister}

@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core'
 import { Reservation } from '../../models/reservation'
 import { Hotel } from '../../models/hotel'
-import { UsersInfo } from '../../reducers/userInfoList'
 import { putReservation } from '../../epics/reservation/actions'
 
 export interface DialogProps {
@@ -54,7 +53,7 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
   const [adminDisplayButton, setAdminDisplayButton] = useState(false)
   const [statusText, setStatusText] = useState('')
 
-  const [targetHotel, setTargetHotel] = useState<Hotel>({
+  const [targetHotel] = useState<Hotel>({
     id: 'dummyId',
     hotelName: 'dummyHotelName',
     city: 'dummyCity',
@@ -64,13 +63,6 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     pictureSrc: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
   })
 
-  const [targetUser, setTargetUser] = useState<UsersInfo>({
-    account: 'dummyAccount',
-    name: 'dummyUserName',
-    email: 'dummyEmail',
-    password: 'dummyPassword',
-    phone: 9,
-  })
   const isAdmin = true;
 
   useEffect(() => {

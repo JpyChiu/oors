@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Form, Field } from 'react-final-form'
 import { makeStyles, styled } from '@material-ui/styles'
 import { TextField as _TextField } from 'final-form-material-ui'
@@ -12,10 +12,11 @@ import {
   Grid,
 } from '@material-ui/core'
 
-import { UsersInfo } from '../../reducers/userInfoList'
+import { UsersForm } from '../../models/user'
+import responseUtil from '../../utils/responseUtil'
+import { REGISTER_ACTIONS } from '../../epics/register/action'
 
 enum userContent {
-  accountStr = '帳號',
   checkPasswordStr = '確認密碼',
   emailStr = 'Email',
   nameStr = '姓名',
@@ -23,10 +24,14 @@ enum userContent {
   phoneStr = '手機號碼',
 }
 
+interface userFormWithCheckPass extends UsersForm {
+  checkPassword: string
+}
+
 export interface DialogProps {
-  data: UsersInfo
+  data: UsersForm
   enable: boolean
-  confirmBtnFuncion: (state: UsersInfo) => void
+  confirmBtnFuncion: (state: UsersForm) => void
   onClose: () => void
 }
 
@@ -81,14 +86,11 @@ const useStyles = makeStyles({
   },
 })
 
-interface State {
-}
 export default function Register(props: React.PropsWithChildren<DialogProps>) {
-  const { confirmBtnFuncion, data, enable, onClose, children } = props
+  const { confirmBtnFuncion, enable, onClose, children } = props
   const { backDrop, cancelButton: cancelButtonStyle, registerButton: registerButtonStyle, title } = useStyles()
-  const [userInfo] = useState<UsersInfo>(data)
+  const [popUpOpen, setPopUpOpen] = useState(false)
   const {
-    accountStr,
     checkPasswordStr,
     emailStr,
     nameStr,
@@ -96,20 +98,18 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
     phoneStr,
   } = userContent
 
-  const {
-    account,
-    email,
-    name,
-  } = userInfo
+  const handlePopUpClose = useCallback(() => {
+    setPopUpOpen(false)
+    onClose()
+  }, [onClose])
 
   const labelAndTextInput = (
     key:
-      | typeof accountStr
       | typeof checkPasswordStr
       | typeof emailStr
       | typeof nameStr
       | typeof passwordStr,
-    defaultValue: string | number,
+    name: 'checkPassword' | 'email' | 'name' | 'password',
     type: 'email' | 'text' | 'password',
   ) => {
     return (
@@ -118,11 +118,10 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
         <Grid item sm={7}>
           <Field
             required
-            name={key}
+            name={name}
             component={TextField as React.FC}
             type={type}
             variant="outlined"
-            defaultValue={defaultValue}
           />
         </Grid>
       </Grid>
@@ -139,7 +138,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const labelAndPhoneInput = (
     key:
       | typeof phoneStr,
-    defaultValue: string | number,
+    name: 'phone',
   ) => {
     return (
       <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
@@ -147,12 +146,11 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
         <Grid item sm={7}>
           <Field
             required
-            name={key}
+            name={name}
             component={TextField as React.FC}
             type="text"
             parse={normalizePhone}
             variant="outlined"
-            defaultValue={defaultValue}
           />
         </Grid>
       </Grid>
@@ -167,14 +165,31 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
     )
   }
 
+  useEffect(() => {
+    const sub = responseUtil.subscribe(
+      {
+        successType: [REGISTER_ACTIONS.REGISTER_USER_SUCCESS],
+        errorType: [REGISTER_ACTIONS.REGISTER_USER_FAILURE],
+      },
+      {
+        next: () => {
+          setPopUpOpen(true)
+        },
+      }
+    )
+
+    return () => sub.unsubscribe()
+  }, [])
+
   const snakeToCamel = (str: string) =>
     str.replace(/([_][a-z])/g, (group: string) => group.toUpperCase().replace('_', ''))
 
-  const onSubmit = useCallback((value: UsersInfo) => {
-    console.log(value)
-    confirmBtnFuncion(userInfo)
-  },
-  [confirmBtnFuncion, userInfo],
+  const onSubmit = useCallback(
+    (value: userFormWithCheckPass) => {
+      delete value.checkPassword
+      confirmBtnFuncion(value)
+    },
+    [confirmBtnFuncion],
   )
 
   return (
@@ -199,12 +214,11 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
             <DialogContent style={{ padding: '57px 100px' }}>
               <Grid container justify="center" alignItems="center">
                 <Grid item xs={12} sm={6}>
-                  {labelAndTextInput(nameStr, name, 'text')}
-                  {labelAndPhoneInput(phoneStr, '')}
-                  {labelAndTextInput(emailStr, email, 'email')}
-                  {labelAndTextInput(accountStr, account, 'text')}
-                  {labelAndTextInput(passwordStr, '', 'password')}
-                  {labelAndTextInput(checkPasswordStr, '', 'password')}
+                  {labelAndTextInput(nameStr, 'name', 'text')}
+                  {labelAndPhoneInput(phoneStr, 'phone')}
+                  {labelAndTextInput(emailStr, 'email', 'email')}
+                  {labelAndTextInput(passwordStr, 'password', 'password')}
+                  {labelAndTextInput(checkPasswordStr, 'checkPassword', 'password')}
                 </Grid>
               </Grid>
             </DialogContent>
@@ -220,6 +234,22 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
           </form>
         )}
       />
+      <Dialog 
+        fullWidth={true}
+        open={popUpOpen} 
+        onClose={handlePopUpClose}>
+        <DialogTitle id="alert-dialog-title"/>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            註冊成功！
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handlePopUpClose} color="primary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Dialog>
   )
 }
