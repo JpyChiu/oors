@@ -101,8 +101,8 @@ export default function ManageOrder() {
                       maxWidth: '100%',
                       maxHeight: '100%',
                     }}
-                    src="https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg"
-                    alt=""
+                    src={userReservationList[i].hotelThumbnail}
+                    alt={userReservationList[i].hotelId}
                   />
                   <div style={{ textAlign: 'left' }}>
                     <p>{`${yyyymmddToDashYyyymmdd(orderItem.startDate)} ~ ${yyyymmddToDashYyyymmdd(

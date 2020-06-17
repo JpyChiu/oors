@@ -21,7 +21,7 @@ ReservationRouter.post('/', (req, res) => {
       tenant_id: target_user.id,
       tenant_name: target_user.name,
       is_paid: false,
-      status: 'live',
+      status: 'waiting',
       hotel_info: {
         person: target_hotel?.person,
         city: target_hotel?.city,
