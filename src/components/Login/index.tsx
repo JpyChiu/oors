@@ -75,7 +75,6 @@ const useStyles = makeStyles({
 
 export default function Login() {
   const dispatch = useDispatch()
-  // const isLoginFailed = useSelector((state: StoreState) => state.login.isLoginFailed)
   const [loginError, setLoginError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()

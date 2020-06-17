@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { ButtonBase, Grid, Paper, Typography } from '@material-ui/core'
 
@@ -7,6 +7,7 @@ import DisplayOrderInfo from '../ManageOrder/orderDetailDialog'
 import { StoreState } from '../../reducers/rootReducer'
 import { Reservation } from '../../models/reservation'
 import { yyyymmddToDashYyyymmdd } from '../../utils/dateConvert'
+import { getUserReservation } from '../../epics/reservation/actions'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ManageOrder() {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const { userReservationList } = useSelector((storeState: StoreState) => ({
     userReservationList: storeState.reservation.userReservationList,
   }))
@@ -50,6 +52,10 @@ export default function ManageOrder() {
     isPaid: false,
     status: 'waiting',
   })
+
+  useEffect(() => {
+    dispatch(getUserReservation())
+  }, [dispatch])
 
   const handleDialogOpen = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
@@ -105,9 +111,11 @@ export default function ManageOrder() {
                     <p>{`${yyyymmddToDashYyyymmdd(orderItem.startDate)} ~ ${yyyymmddToDashYyyymmdd(
                       orderItem.endDate,
                     )}`}</p>
-                    <p>{`承租人: ${orderItem.tenantName}`}</p>
+                    {localStorage.getItem('role') === 'admin' && <p>{`承租人: ${orderItem.tenantName}`}</p>}
                     <p>{`地點: ${orderItem.hotelCity}`}</p>
+                    <p>{`人數: ${orderItem.hotelPerson}`}</p>
                   </div>
+                  <p style={{ alignSelf: 'flex-end', margin: 5 }}>點擊查看詳細</p>
                 </ButtonBase>
               </Paper>
             </Grid>

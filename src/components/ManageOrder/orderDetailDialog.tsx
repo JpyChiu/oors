@@ -1,11 +1,7 @@
-import React, {useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/styles'
-import {
-  Dialog,
-  DialogTitle,
-  Grid,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, Grid } from '@material-ui/core'
 import { Reservation } from '../../models/reservation'
 import { Hotel } from '../../models/hotel'
 import { putReservation } from '../../epics/reservation/actions'
@@ -63,39 +59,39 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     pictureSrc: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
   })
 
-  const isAdmin = true;
+  const isAdmin = true
 
   useEffect(() => {
     switch (orderInfo.status) {
       case 'canceled':
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
-        setStatusText('訂單已取消') 
+        setStatusText('訂單已取消')
         break
       case 'rejected':
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
-        setStatusText('訂單被拒絕') 
+        setStatusText('訂單被拒絕')
         break
       case 'accepted':
         setUserDisplayButton(true)
         setAdminDisplayButton(false)
-        setStatusText('訂單已被接受') 
+        setStatusText('訂單已被接受')
         break
       case 'waiting':
         setUserDisplayButton(true)
         setAdminDisplayButton(true)
-        setStatusText('訂單正在等待審核') 
+        setStatusText('訂單正在等待審核')
         break
       case 'outdate':
         setUserDisplayButton(true)
         setAdminDisplayButton(true)
-        setStatusText('訂單已結束') 
+        setStatusText('訂單已結束')
         break
       default:
         setUserDisplayButton(false)
         setAdminDisplayButton(false)
-        setStatusText('錯誤') 
+        setStatusText('錯誤')
         break
     }
   }, [orderInfo.status])
@@ -140,7 +136,6 @@ export default function DisplayOrderInfo(props: React.PropsWithChildren<DialogPr
     else if (!isAdmin && userDisplayButton) return <UserButtonSet />
     return <div></div>
   }
-
 
   return (
     <Dialog

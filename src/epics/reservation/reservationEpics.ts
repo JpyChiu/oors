@@ -47,7 +47,7 @@ export const getUserReservationEpic = (action$: ActionsObservable<AnyAction>) =>
   action$.pipe(
     ofType(RESERVATION_ACTIONS.GET_USER_RESERVATION),
     exhaustMap(() =>
-      ajax.get('/api/reservation', { Authorization: localStorage.getItem('sessionKey') }).pipe(
+      ajax.get('/api/reservation/retrieve_user_orders', { Authorization: localStorage.getItem('sessionKey') }).pipe(
         map((res: AjaxResponse) => getUserReservationSuccess(responseToModelList(res.response))),
         catchError(() => of(getUserReservationFailed())),
       ),

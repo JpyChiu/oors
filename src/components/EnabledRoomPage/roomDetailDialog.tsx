@@ -10,9 +10,20 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { Cancel, KeyboardArrowRight } from '@material-ui/icons'
 
 import { Hotel } from '../../models/hotel'
+
+const useStyles = makeStyles(theme => ({
+  orderBtn: {
+    '&:active': {
+      boxShadow: 'none',
+      backgroundColor: '#0062cc',
+      borderColor: '#005cbf',
+    },
+  },
+}))
 
 export interface DialogProps {
   hotelData: Hotel
@@ -22,6 +33,7 @@ export interface DialogProps {
 }
 
 export default function RoomDetailDialog(props: React.PropsWithChildren<DialogProps>) {
+  const classes = useStyles()
   const { enable, hotelData, onClose, onOrder } = props
   const [popUpOpen, setPopUpOpen] = useState(false)
 
@@ -32,6 +44,11 @@ export default function RoomDetailDialog(props: React.PropsWithChildren<DialogPr
   const handlePopUpCancel = useCallback(() => {
     setPopUpOpen(false)
   }, [])
+
+  const handleOrderButton = useCallback(() => {
+    setPopUpOpen(false)
+    onOrder()
+  }, [onOrder])
 
   return (
     <Dialog open={enable} fullWidth maxWidth="md" onClose={onClose}>
@@ -91,7 +108,7 @@ export default function RoomDetailDialog(props: React.PropsWithChildren<DialogPr
           <Button onClick={handlePopUpCancel} color="primary">
             取消
           </Button>
-          <Button onClick={onOrder} color="primary" autoFocus>
+          <Button className={classes.orderBtn} onClick={handleOrderButton} color="primary" autoFocus>
             訂房
           </Button>
         </DialogActions>
