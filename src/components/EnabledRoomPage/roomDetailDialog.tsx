@@ -1,31 +1,14 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Typography,
-  IconButton,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Button, Dialog, DialogContent, DialogTitle, Grid, Typography, IconButton } from '@material-ui/core'
 import { Cancel, KeyboardArrowRight } from '@material-ui/icons'
 
 import { Hotel } from '../../models/hotel'
 import routes from '../../routes'
-
-const useStyles = makeStyles(theme => ({
-  orderBtn: {
-    '&:active': {
-      boxShadow: 'none',
-      backgroundColor: '#0062cc',
-      borderColor: '#005cbf',
-    },
-  },
-}))
+import BeforeOrderPopUp from './beforeOrderPopUp'
+import WarningPopUp from './warningPopUp'
+import responseUtil from '../../utils/responseUtil'
+import { RESERVATION_ACTIONS } from '../../epics/reservation/actions'
 
 export interface DialogProps {
   hotelData: Hotel
@@ -35,33 +18,59 @@ export interface DialogProps {
 }
 
 export default function RoomDetailDialog(props: React.PropsWithChildren<DialogProps>) {
-  const classes = useStyles()
   const history = useHistory()
   const { enable, hotelData, onClose, onOrder } = props
-  const [popUpOpen, setPopUpOpen] = useState(false)
-  const [warningOpen, setWarningOpen] = useState(false)
+  const [beforeOrderPopUpOpen, setBeforeOrderPopUpOpen] = useState(false)
+  const [loginWarningOpen, setLoginWarningOpen] = useState(false)
+  const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
+  const [showFailedPopUp, setShowFailedPopUp] = useState(false)
+
+  useEffect(() => {
+    const sub = responseUtil.subscribe(
+      {
+        successType: [RESERVATION_ACTIONS.POST_RESERVATION_SUCCESS],
+        errorType: [RESERVATION_ACTIONS.POST_RESERVATION_FAILED],
+      },
+      {
+        next: () => {
+          setShowSuccessPopUp(true)
+        },
+        error: () => {
+          setShowFailedPopUp(true)
+        },
+      },
+    )
+
+    return () => sub.unsubscribe()
+  }, [])
 
   const handleOrderClick = useCallback(() => {
-    if (localStorage.getItem("sessionKey") !== null) {
-      setPopUpOpen(true)
+    if (localStorage.getItem('sessionKey') !== null) {
+      setBeforeOrderPopUpOpen(true)
     } else {
-      setWarningOpen(true)
+      setLoginWarningOpen(true)
     }
   }, [])
 
-  const handlePopUpCancel = useCallback(() => {
-    setPopUpOpen(false)
+  const handleBeforeOrderPopUpClose = useCallback(() => {
+    setBeforeOrderPopUpOpen(false)
   }, [])
 
-  const handleOrderButton = useCallback(() => {
-    setPopUpOpen(false)
-    onOrder()
-  }, [onOrder])
-
-  const handleWarningOpenCancel = useCallback(() => {
-    setWarningOpen(false)
+  const handleLoginWarningOpenClose = useCallback(() => {
+    setLoginWarningOpen(false)
     history.push(routes.login)
   }, [history])
+
+  const handleOrderSuccessPopUpClose = useCallback(() => {
+    setShowSuccessPopUp(false)
+    onClose()
+    history.push(routes.manageOrder)
+  }, [history, onClose])
+
+  const handleOrderFailedPopUpClose = useCallback(() => {
+    setShowFailedPopUp(false)
+    onClose()
+  }, [onClose])
 
   return (
     <Dialog open={enable} fullWidth maxWidth="md" onClose={onClose}>
@@ -110,38 +119,14 @@ export default function RoomDetailDialog(props: React.PropsWithChildren<DialogPr
           </Grid>
         </Grid>
       </DialogContent>
-      <Dialog open={popUpOpen} onClose={handlePopUpCancel}>
-        <DialogTitle id="alert-dialog-title">{'確定訂購這間嗎?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            使用者訂房前請先確認相關注意事項, 訂房後可在入住一星期前取消訂單
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handlePopUpCancel} color="primary">
-            取消
-          </Button>
-          <Button className={classes.orderBtn} onClick={handleOrderButton} color="primary" autoFocus>
-            訂房
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog 
-        fullWidth={true}
-        open={warningOpen} 
-        onClose={handleWarningOpenCancel}>
-        <DialogTitle id="alert-dialog-title"/>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            請先登入！
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleWarningOpenCancel} color="primary" autoFocus>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <BeforeOrderPopUp enable={beforeOrderPopUpOpen} onClose={handleBeforeOrderPopUpClose} onOrder={onOrder} />
+      <WarningPopUp enable={loginWarningOpen} message={'請先登入！'} onClose={handleLoginWarningOpenClose} />
+      <WarningPopUp enable={showSuccessPopUp} message={'訂房成功!'} onClose={handleOrderSuccessPopUpClose} />
+      <WarningPopUp
+        enable={showFailedPopUp}
+        message={'OOPS! 哪裡出問題了,請再試一次!'}
+        onClose={handleOrderFailedPopUpClose}
+      />
     </Dialog>
   )
 }

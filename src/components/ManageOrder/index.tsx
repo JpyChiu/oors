@@ -57,17 +57,18 @@ export default function ManageOrder() {
     dispatch(getUserReservation())
   }, [dispatch])
 
-  const handleDialogOpen = (index:number) => {
+  const handleDialogOpen = useCallback(
+    (index: number) => {
       setTargetReservation(userReservationList[index])
       setDialogOpen(true)
-    }
+    },
+    [userReservationList],
+  )
 
-
-  const handleDialogClose = () => {
+  const handleDialogClose = useCallback(() => {
     setDialogOpen(false)
     dispatch(getUserReservation())
-    console.log(userReservationList[0])
-  }
+  }, [dispatch])
 
   return (
     <Grid container justify="center" style={{ margin: 10 }}>
@@ -92,7 +93,7 @@ export default function ManageOrder() {
                     display: 'flex',
                     justifyContent: 'flex-start',
                   }}
-                  onClick={()=>handleDialogOpen(i)}
+                  onClick={() => handleDialogOpen(i)}
                 >
                   <img
                     style={{

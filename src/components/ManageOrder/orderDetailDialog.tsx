@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/styles'
 import { Dialog, DialogTitle, Grid } from '@material-ui/core'
 import { Reservation } from '../../models/reservation'
-import { Hotel } from '../../models/hotel'
 import { putReservation } from '../../epics/reservation/actions'
 
 export interface DialogProps {

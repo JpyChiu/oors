@@ -1,8 +1,9 @@
 import { ActionsObservable, ofType } from 'redux-observable'
 import { AnyAction } from 'redux'
 import { of } from 'rxjs'
-import { catchError, exhaustMap, map } from 'rxjs/operators'
+import { catchError, exhaustMap, map, tap } from 'rxjs/operators'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
+
 import { Reservation, IncomingReservation } from '../../models/reservation'
 import {
   RESERVATION_ACTIONS,
@@ -13,6 +14,7 @@ import {
   putReservationSuccess,
   putReservationFailed,
 } from './actions'
+import responseUtil from '../../utils/responseUtil'
 
 const responseToModel = (resp: IncomingReservation): Reservation => ({
   id: resp.id,
@@ -37,8 +39,12 @@ export const postReservationEpic = (action$: ActionsObservable<AnyAction>) =>
     ofType(RESERVATION_ACTIONS.POST_RESERVATION),
     exhaustMap((action: AnyAction) =>
       ajax.post('/api/reservation/', action.payload, { Authorization: localStorage.getItem('sessionKey') }).pipe(
+        tap(() => responseUtil.success(RESERVATION_ACTIONS.POST_RESERVATION_SUCCESS)),
         map((res: AjaxResponse) => postReservationSuccess(responseToModel(res.response))),
-        catchError(() => of(postReservationFailed())),
+        catchError(() => {
+          responseUtil.error(RESERVATION_ACTIONS.POST_RESERVATION_FAILED)
+          return of(postReservationFailed())
+        }),
       ),
     ),
   )
