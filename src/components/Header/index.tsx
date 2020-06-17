@@ -99,7 +99,7 @@ function Header() {
     history.push(routes.changeUserInfo)
   }, [history])
 
-  const menuItem = [
+  const loginMenuItem = [
     {
       text: 'User Manage',
       onClick: handleUserManageClick,
@@ -111,14 +111,17 @@ function Header() {
       iconComponent: <AppsSharpIcon fontSize="small" />,
     },
     {
-      text: 'Login',
-      onClick: handleLoginClick,
-      iconComponent: <FormatIndentIncreaseSharpIcon fontSize="small" />,
-    },
-    {
       text: 'Logout',
       onClick: handleLogoutClick,
       iconComponent: <FormatIndentDecreaseSharpIcon fontSize="small" />,
+    },
+  ]
+
+  const noLoginMenuItem = [
+    {
+      text: 'Login',
+      onClick: handleLoginClick,
+      iconComponent: <FormatIndentIncreaseSharpIcon fontSize="small" />,
     },
   ]
 
@@ -159,7 +162,7 @@ function Header() {
           <IconButton color="inherit" aria-label="open menu" onClick={handleAnchorElClick} edge="start">
             <MenuIcon />
           </IconButton>
-          <MenuContainer menuItemSets={menuItem} />
+          <MenuContainer menuItemSets={localStorage.getItem('sessionKey') ? loginMenuItem : noLoginMenuItem} />
         </div>
       </Toolbar>
     </AppBar>

@@ -7,12 +7,16 @@ export interface ReservationState {
 }
 
 // Fake Data
-const initState = {
+const initState: ReservationState = {
   userReservationList: [
     {
       id: 'test_id1',
       hotelId: 'room_00001',
+      hotelPerson: 2,
+      hotelCity: 'Taipei',
+      hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
       tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      tenantName: 'Adin',
       startDate: '20200510',
       endDate: '20200511',
       price: 1000,
@@ -22,7 +26,11 @@ const initState = {
     {
       id: 'test_id2',
       hotelId: 'room_00001',
+      hotelPerson: 2,
+      hotelCity: 'Taipei',
+      hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
       tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      tenantName: 'Adin',
       startDate: '20200514',
       endDate: '20200515',
       price: 1000,
@@ -32,7 +40,11 @@ const initState = {
     {
       id: 'test_id3',
       hotelId: 'room_00002',
+      hotelPerson: 2,
+      hotelCity: 'Taipei',
+      hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
       tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      tenantName: 'Adin',
       startDate: '20200610',
       endDate: '20200611',
       price: 1000,
@@ -41,8 +53,12 @@ const initState = {
     },
     {
       id: 'test_id4',
+      hotelPerson: 2,
+      hotelCity: 'Taipei',
       hotelId: 'room_00001',
+      hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
       tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      tenantName: 'Adin',
       startDate: '20200410',
       endDate: '20200411',
       price: 1000,
@@ -52,7 +68,11 @@ const initState = {
     {
       id: 'test_id5',
       hotelId: 'room_00002',
+      hotelPerson: 2,
+      hotelCity: 'Taipei',
+      hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
       tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      tenantName: 'Adin',
       startDate: '20200510',
       endDate: '20200511',
       price: 1000,
@@ -62,7 +82,11 @@ const initState = {
     {
       id: 'test_id6',
       hotelId: 'room_00002',
+      hotelPerson: 2,
+      hotelCity: 'Taipei',
+      hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
       tenantId: 'f5e10cd8-cec6-4e4c-bd8d-074e3bb68cd3',
+      tenantName: 'Adin',
       startDate: '20200510',
       endDate: '20200511',
       price: 1000,

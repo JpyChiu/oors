@@ -16,10 +16,12 @@ import {
 
 const responseToModel = (resp: IncomingReservation): Reservation => ({
   id: resp.id,
-  hotelId: resp.hotel_info?.id ? resp.hotel_info.id : null,
-  hotelPerson: resp.hotel_info?.person,
-  hotelCity: resp.hotel_info?.city,
+  hotelId: resp.hotel_id,
+  hotelPerson: resp.hotel_info.person,
+  hotelCity: resp.hotel_info.city,
+  hotelThumbnail: resp.hotel_info.thumbnail,
   tenantId: resp.tenant_id,
+  tenantName: resp.tenant_name,
   startDate: resp.start_date,
   endDate: resp.end_date,
   price: resp.price,

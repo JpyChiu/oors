@@ -1,18 +1,12 @@
 import React, { useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import Avatar from '@material-ui/core/Avatar'
-import Typography from '@material-ui/core/Typography'
-import { Grid } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
-import FolderIcon from '@material-ui/icons/Folder'
-import DeleteIcon from '@material-ui/icons/Delete'
+import { ButtonBase, Grid, Paper, Typography } from '@material-ui/core'
 
 import DisplayOrderInfo from '../ManageOrder/orderDetailDialog'
+import { StoreState } from '../../reducers/rootReducer'
+import { Reservation } from '../../models/reservation'
+import { yyyymmddToDashYyyymmdd } from '../../utils/dateConvert'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: 'gray',
     },
     item: {
-      // width: '80%',
       backgroundColor: 'white',
       justifyContent: 'center',
     },
@@ -33,19 +26,24 @@ const useStyles = makeStyles((theme: Theme) =>
     demo: {
       backgroundColor: theme.palette.background.paper,
     },
+    paper: {},
   }),
 )
 
 export default function ManageOrder() {
   const classes = useStyles()
-  const [dense] = useState(false)
+  const { userReservationList } = useSelector((storeState: StoreState) => ({
+    userReservationList: storeState.reservation.userReservationList,
+  }))
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [targetReservation, setTargetReservation] = useState({
+  const [targetReservation, setTargetReservation] = useState<Reservation>({
     id: 'dummyId',
     hotelId: 'dummyHotelId',
-    city: 'dummyCity',
-    people: 1,
+    hotelCity: 'dummyCity',
+    hotelPerson: 1,
+    hotelThumbnail: 'https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg',
     tenantId: 'dummyTenantId',
+    tenantName: 'Adin',
     startDate: '2020/01/01',
     endDate: '2020/01/01',
     price: 1000,
@@ -53,66 +51,15 @@ export default function ManageOrder() {
     status: 'waiting',
   })
 
-  const roomItem = [
-    {
-      id: '1',
-      hotelId: 'Subway',
-      city: 'Taipei',
-      tenantId: 'Joy',
-      startDate: '2020/05/14',
-      endDate: '2020/05/17',
-      people: 2,
-      price: 1000,
-      isPaid: true,
-      status: '入住中',
-    },
-    {
-      id: '2',
-      hotelId: 'KFC',
-      city: 'NewYork',
-      tenantId: 'Adin',
-      startDate: '2020/05/11',
-      endDate: '2020/05/14',
-      people: 4,
-      price: 1000,
-      isPaid: true,
-      status: '入住中',
-    },
-    {
-      id: '3',
-      hotelId: '鳳梨屋',
-      city: 'Paris',
-      tenantId: 'Andrew',
-      startDate: '2020/05/10',
-      endDate: '2020/05/12',
-      people: 3,
-      price: 1000,
-      isPaid: true,
-      status: '入住中',
-    },
-    {
-      id: '4',
-      hotelId: 'Life',
-      city: 'Tokyo',
-      tenantId: 'Yachi',
-      startDate: '2020/05/10',
-      endDate: '2020/05/15',
-      people: 4,
-      price: 1000,
-      isPaid: true,
-      status: '入住中',
-    },
-  ]
-
   const handleDialogOpen = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
-      const findTargetReservation = roomItem.find(
+      const findTargetReservation = userReservationList.find(
         reservation => reservation.id === event.currentTarget.dataset['reservationId'],
       )
       setTargetReservation(findTargetReservation!)
       setDialogOpen(true)
     },
-    [roomItem],
+    [userReservationList],
   )
 
   const handleDialogClose = () => {
@@ -127,28 +74,45 @@ export default function ManageOrder() {
         </Typography>
       </Grid>
       <Grid item container></Grid>
-      <div className={classes.demo}>
-        <List dense={dense}>
-          {roomItem.map((roomItem, i) => (
-            <ListItem button key={i} data-reservation-id={roomItem.id} onClick={handleDialogOpen}>
-              <ListItemAvatar>
-                <Avatar>
-                  <FolderIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={`地點: ${roomItem.city} 房間名稱: ${roomItem.hotelId} 入住日期: ${roomItem.startDate} 搬出日期: ${roomItem.endDate} 人數: ${roomItem.people}`}
-                //secondary={secondary ? 'Secondary text' : null}
-              />
-              <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+      <Grid container spacing={2} justify="center">
+        {userReservationList &&
+          userReservationList.map((orderItem, i) => (
+            <Grid item xs={8} sm={8} md={8} lg={8} key={i} data-reservation-id={orderItem.id}>
+              <Paper className={classes.paper} elevation={3}>
+                <ButtonBase
+                  style={{
+                    minWidth: 400,
+                    width: '100%',
+                    height: 150,
+                    padding: 10,
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                  }}
+                  onClick={handleDialogOpen}
+                >
+                  <img
+                    style={{
+                      paddingRight: 20,
+                      display: 'block',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                    }}
+                    src="https://s.newtalk.tw/album/news/381/5e7aeace5583c.jpg"
+                    alt=""
+                  />
+                  <div style={{ textAlign: 'left' }}>
+                    <p>{`${yyyymmddToDashYyyymmdd(orderItem.startDate)} ~ ${yyyymmddToDashYyyymmdd(
+                      orderItem.endDate,
+                    )}`}</p>
+                    <p>{`承租人: ${orderItem.tenantName}`}</p>
+                    <p>{`地點: ${orderItem.hotelCity}`}</p>
+                  </div>
+                </ButtonBase>
+              </Paper>
+            </Grid>
           ))}
-        </List>
-      </div>
+      </Grid>
       <DisplayOrderInfo data={targetReservation} enable={dialogOpen} onClose={handleDialogClose}></DisplayOrderInfo>
     </Grid>
   )

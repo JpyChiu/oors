@@ -21,7 +21,9 @@ export interface Hotel {
 export interface OrderQueue {
   id: string
   hotel_id: string
+  hotel_info: { person: number; city: string; thumbnail: string }
   tenant_id: string
+  tenant_name: string
   start_date: string
   end_date: string
   price: number

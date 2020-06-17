@@ -20,7 +20,7 @@ function HomeControl() {
         {/* <Route exact path={routes.changeUserInfo} component={ChangeUserInfo} /> */}
         <Route exact path={routes.enabledRoomPage} component={EnabledRoomPage} />
         <Route exact path={routes.manageOrder} component={ManageOrder} />
-        <Redirect to={routes.login} />
+        <Redirect to={routes.home} />
       </Switch>
     </>
   )

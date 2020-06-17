@@ -14,12 +14,19 @@ ReservationRouter.post('/', (req, res) => {
   if (!target_user) {
     res.status(401).send('Please login first')
   } else {
+    const target_hotel = hotelList.find(hotel => req.body.hotel_id === hotel.id)
     const order: OrderQueue = {
       ...req.body,
       id: uuid(),
       tenant_id: target_user.id,
+      tenant_name: target_user.name,
       is_paid: false,
       status: 'live',
+      hotel_info: {
+        person: target_hotel?.person,
+        city: target_hotel?.city,
+        thumbnail: target_hotel?.picture_src,
+      },
     }
     orderQueue.push(order)
     res.send(order)
@@ -38,15 +45,14 @@ ReservationRouter.get('/retrieve_user_orders', (req, res) => {
       }
       return order.tenant_id === target_user.id
     })
-    user_order_list.map(order => {
-      const target_hotel = hotelList.find(hotel => order.hotel_id === hotel.id)
-      const map_user_order = {
-        ...order,
-        hotel_info: { id: order.hotel_id, person: target_hotel?.person, city: target_hotel?.city },
-      }
-      delete map_user_order.hotel_id
-      return map_user_order
-    })
+    // const response_order_list = user_order_list.map(order => {
+    //   const target_hotel = hotelList.find(hotel => order.hotel_id === hotel.id)
+    //   const map_user_order = {
+    //     ...order,
+    //     hotel_info: { person: target_hotel?.person, city: target_hotel?.city, thumbnail: target_hotel?.picture_src },
+    //   }
+    //   return map_user_order
+    // })
     res.send(user_order_list)
   }
 })

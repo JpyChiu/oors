@@ -10,3 +10,10 @@ export const convertYyyymmddToDate = (yyyymmdd: string): Date => {
   const d = parseInt(yyyymmdd.slice(6, 8))
   return new Date(y, m, d)
 }
+
+export const yyyymmddToDashYyyymmdd = (yyyymmdd: string): string => {
+  const y = yyyymmdd.slice(0, 4)
+  const m = yyyymmdd.slice(4, 6)
+  const d = yyyymmdd.slice(6, 8)
+  return `${y}-${m}-${d}`
+}

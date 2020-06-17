@@ -101,9 +101,10 @@ export default function Login() {
       },
       {
         next: (resp: any) => {
-          console.log('in sub', resp)
+          console.log('in sub success', resp)
           localStorage.setItem('sessionKey', resp.data.session)
           localStorage.setItem('userName', resp.data.name)
+          localStorage.setItem('role', resp.data.role)
           history.goBack()
         },
         error: () => {
@@ -120,13 +121,15 @@ export default function Login() {
     history.push(routes.home)
   }, [history])
 
-  const onLogin = useCallback((email: string, password: string) => {
+  const onLogin = useCallback(
+    (email: string, password: string) => {
       dispatch(postLogin(email, password))
     },
     [dispatch],
   )
 
-  const onRegister = useCallback((userForm: UsersForm) => {
+  const onRegister = useCallback(
+    (userForm: UsersForm) => {
       dispatch(registerUser(userForm))
     },
     [dispatch],
