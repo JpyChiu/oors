@@ -14,7 +14,8 @@ const initState: ReservationState = {
 export default function hotelReducer(state: ReservationState = initState, action: AnyAction) {
   switch (action.type) {
     case RESERVATION_ACTIONS.POST_RESERVATION_SUCCESS:
-      return { ...state, userReservationList: { ...action.payload } }
+      console.log(action.payload)
+      return { ...state, userReservationList: [...state.userReservationList, action.payload] }
     case RESERVATION_ACTIONS.GET_USER_RESERVATION_SUCCESS:
       return { ...state, userReservationList: action.payload }
     case RESERVATION_ACTIONS.PUT_RESERVATION_SUCCESS:
