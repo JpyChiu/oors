@@ -77,7 +77,6 @@ const useStyles = makeStyles({
 export default function Login() {
   const dispatch = useDispatch()
   // const isLoginFailed = useSelector((state: StoreState) => state.login.isLoginFailed)
-  const [test, setTest] = useState(false)
   const [loginError, setLoginError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const classes = useStyles()
@@ -93,32 +92,31 @@ export default function Login() {
   useEffect(() => {
     console.log(history)
     console.log(localStorage.getItem('sessionKey'))
-    console.log(test)
-    setTest(false)
     if (localStorage.getItem('sessionKey')) {
       history.push(routes.home)
     }
 
-    // TODO: can not get in this useEffect
     const sub = responseUtil.subscribe(
       {
         successType: [LOGIN_ACTIONS.POST_LOGIN_SUCCESS],
+        errorType: [LOGIN_ACTIONS.POST_LOGIN_FAILED],
       },
       {
         next: (resp: any) => {
-          console.log('in sub')
-          localStorage.setItem('sessionKey', resp.session)
-          localStorage.setItem('userName', resp.name)
+          console.log('in sub', resp)
+          localStorage.setItem('sessionKey', resp.data.session)
+          localStorage.setItem('userName', resp.data.name)
           history.goBack()
         },
         error: () => {
+          console.log('in sub error')
           setLoginError(true)
         },
       },
     )
 
     return () => sub.unsubscribe()
-  }, [history, test])
+  }, [history])
 
   const handleLogoClick = useCallback(() => {
     history.push(routes.home)
@@ -126,7 +124,6 @@ export default function Login() {
 
   const onLogin = useCallback(
     (email: string, password: string) => {
-      setTest(true)
       dispatch(postLogin(email, password))
     },
     [dispatch],
