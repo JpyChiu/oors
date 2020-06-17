@@ -186,7 +186,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
 
   const onSubmit = useCallback(
     (value: userFormWithCheckPass) => {
-      if(value.password != value.checkPassword){
+      if(value.password !== value.checkPassword){
         return { checkPassword: '與密碼不一致' }
       }
       else

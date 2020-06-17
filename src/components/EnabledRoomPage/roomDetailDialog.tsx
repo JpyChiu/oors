@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Button,
   Dialog,
@@ -14,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Cancel, KeyboardArrowRight } from '@material-ui/icons'
 
 import { Hotel } from '../../models/hotel'
+import routes from '../../routes'
 
 const useStyles = makeStyles(theme => ({
   orderBtn: {
@@ -34,11 +36,17 @@ export interface DialogProps {
 
 export default function RoomDetailDialog(props: React.PropsWithChildren<DialogProps>) {
   const classes = useStyles()
+  const history = useHistory()
   const { enable, hotelData, onClose, onOrder } = props
   const [popUpOpen, setPopUpOpen] = useState(false)
+  const [warningOpen, setWarningOpen] = useState(false)
 
   const handleOrderClick = useCallback(() => {
-    setPopUpOpen(true)
+    if (localStorage.getItem("sessionKey") !== null) {
+      setPopUpOpen(true)
+    } else {
+      setWarningOpen(true)
+    }
   }, [])
 
   const handlePopUpCancel = useCallback(() => {
@@ -49,6 +57,11 @@ export default function RoomDetailDialog(props: React.PropsWithChildren<DialogPr
     setPopUpOpen(false)
     onOrder()
   }, [onOrder])
+
+  const handleWarningOpenCancel = useCallback(() => {
+    setWarningOpen(false)
+    history.push(routes.login)
+  }, [history])
 
   return (
     <Dialog open={enable} fullWidth maxWidth="md" onClose={onClose}>
@@ -110,6 +123,22 @@ export default function RoomDetailDialog(props: React.PropsWithChildren<DialogPr
           </Button>
           <Button className={classes.orderBtn} onClick={handleOrderButton} color="primary" autoFocus>
             訂房
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog 
+        fullWidth={true}
+        open={warningOpen} 
+        onClose={handleWarningOpenCancel}>
+        <DialogTitle id="alert-dialog-title"/>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            請先登入！
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleWarningOpenCancel} color="primary" autoFocus>
+            OK
           </Button>
         </DialogActions>
       </Dialog>
