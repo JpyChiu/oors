@@ -71,4 +71,4 @@ export const putReservationEpic = (action$: ActionsObservable<AnyAction>) =>
     ),
   )
 
-export default [postReservationEpic, getUserReservationEpic]
+export default [postReservationEpic, getUserReservationEpic, putReservationEpic]

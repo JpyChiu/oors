@@ -57,19 +57,16 @@ export default function ManageOrder() {
     dispatch(getUserReservation())
   }, [dispatch])
 
-  const handleDialogOpen = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      const findTargetReservation = userReservationList.find(
-        reservation => reservation.id === event.currentTarget.dataset['reservationId'],
-      )
-      setTargetReservation(findTargetReservation!)
+  const handleDialogOpen = (index:number) => {
+      setTargetReservation(userReservationList[index])
       setDialogOpen(true)
-    },
-    [userReservationList],
-  )
+    }
+
 
   const handleDialogClose = () => {
     setDialogOpen(false)
+    dispatch(getUserReservation())
+    console.log(userReservationList[0])
   }
 
   return (
@@ -95,7 +92,7 @@ export default function ManageOrder() {
                     display: 'flex',
                     justifyContent: 'flex-start',
                   }}
-                  onClick={handleDialogOpen}
+                  onClick={()=>handleDialogOpen(i)}
                 >
                   <img
                     style={{

@@ -12,7 +12,7 @@ export const orderQueue: OrderQueue[] = [
     end_date: '20200511',
     price: 1000,
     is_paid: true,
-    status: 'accepted',
+    status: 'waiting',
   },
   {
     id: uuid(),
@@ -24,7 +24,7 @@ export const orderQueue: OrderQueue[] = [
     end_date: '20200515',
     price: 1000,
     is_paid: true,
-    status: 'accepted',
+    status: 'waiting',
   },
   {
     id: uuid(),
