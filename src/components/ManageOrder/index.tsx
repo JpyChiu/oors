@@ -4,10 +4,10 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import { ButtonBase, Grid, Paper, Typography } from '@material-ui/core'
 
 import DisplayOrderInfo from '../ManageOrder/orderDetailDialog'
-import { StoreState } from '../../reducers/rootReducer'
-import { Reservation } from '../../models/reservation'
-import { yyyymmddToDashYyyymmdd } from '../../utils/dateConvert'
-import { getUserReservation } from '../../epics/reservation/actions'
+import { StoreState } from '@src/reducers/rootReducer'
+import { Reservation } from '@src/models/reservation'
+import { yyyymmddToDashYyyymmdd } from '@src/utils/dateConvert'
+import { getUserReservation } from '@src/epics/reservation/actions'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

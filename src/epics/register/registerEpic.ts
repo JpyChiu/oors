@@ -3,8 +3,8 @@ import { AnyAction } from 'redux'
 import { of } from 'rxjs'
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
-import { REGISTER_ACTIONS, registerUserSuccess, registerUserFailure } from "./action";
-import responseUtil from '../../utils/responseUtil'
+import { REGISTER_ACTIONS, registerUserSuccess, registerUserFailure } from './action'
+import responseUtil from '@src/utils/responseUtil'
 
 export const registerUserEpic = (action$: ActionsObservable<AnyAction>) =>
   action$.pipe(

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/styles'
 import { Dialog, DialogTitle, Grid } from '@material-ui/core'
-import { Reservation } from '../../models/reservation'
-import { putReservation } from '../../epics/reservation/actions'
+import { Reservation } from '@src/models/reservation'
+import { putReservation } from '@src/epics/reservation/actions'
 
 export interface DialogProps {
   data: Reservation

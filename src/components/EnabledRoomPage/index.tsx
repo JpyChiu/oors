@@ -7,11 +7,11 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import InfoIcon from '@material-ui/icons/Info'
 
 import RoomDetailDialog from './roomDetailDialog'
-import { StoreState } from '../../reducers/rootReducer'
-import { Hotel } from '../../models/hotel'
-import routes from '../../routes'
-import { convertYyyymmddToDate } from '../../utils/dateConvert'
-import { postReservation } from '../../epics/reservation/actions'
+import { StoreState } from '@src/reducers/rootReducer'
+import { Hotel } from '@src/models/hotel'
+import routes from '@src/routes'
+import { convertYyyymmddToDate } from '@src/utils/dateConvert'
+import { postReservation } from '@src/epics/reservation/actions'
 
 const useStyles = makeStyles(theme => ({
   root: {

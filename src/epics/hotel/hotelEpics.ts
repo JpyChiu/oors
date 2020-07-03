@@ -3,7 +3,7 @@ import { AnyAction } from 'redux'
 import { of } from 'rxjs'
 import { catchError, exhaustMap, map } from 'rxjs/operators'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
-import { IncomingHotel, Hotel } from '../../models/hotel'
+import { IncomingHotel, Hotel } from '@src/models/hotel'
 import {
   HOTEL_ACTIONS,
   getCitiesAndPersonSuccess,

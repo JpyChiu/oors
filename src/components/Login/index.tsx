@@ -10,12 +10,12 @@ import { TextField } from 'final-form-material-ui'
 
 import logo from './logo.jpg'
 
-import { UsersForm } from '../../models/user'
-import { postLogin, LOGIN_ACTIONS } from '../../epics/login/action'
-import { registerUser } from '../../epics/register/action'
+import { UsersForm } from '@src/models/user'
+import { postLogin, LOGIN_ACTIONS } from '@src/epics/login/action'
+import { registerUser } from '@src/epics/register/action'
 import Register from '../Register/index'
-import routes from '../../routes'
-import responseUtil from '../../utils/responseUtil'
+import routes from '@src/routes'
+import responseUtil from '@src/utils/responseUtil'
 
 interface LoginInfoValues {
   email: string | null

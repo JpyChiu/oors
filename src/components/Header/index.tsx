@@ -18,7 +18,7 @@ import FormatIndentDecreaseSharpIcon from '@material-ui/icons/FormatIndentDecrea
 import FormatIndentIncreaseSharpIcon from '@material-ui/icons/FormatIndentIncreaseSharp'
 import MenuIcon from '@material-ui/icons/Menu'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import routes from '../../routes'
+import routes from '@src/routes'
 
 const useStyles = makeStyles({
   root: {

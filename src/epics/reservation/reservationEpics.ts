@@ -4,7 +4,7 @@ import { of } from 'rxjs'
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
 
-import { Reservation, IncomingReservation } from '../../models/reservation'
+import { Reservation, IncomingReservation } from '@src/models/reservation'
 import {
   RESERVATION_ACTIONS,
   postReservationSuccess,
@@ -14,7 +14,7 @@ import {
   putReservationSuccess,
   putReservationFailed,
 } from './actions'
-import responseUtil from '../../utils/responseUtil'
+import responseUtil from '@src/utils/responseUtil'
 
 const responseToModel = (resp: IncomingReservation): Reservation => ({
   id: resp.id,

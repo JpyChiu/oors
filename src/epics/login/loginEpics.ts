@@ -5,7 +5,7 @@ import { catchError, exhaustMap, map, tap } from 'rxjs/operators'
 import { ajax, AjaxResponse } from 'rxjs/ajax'
 
 import { LOGIN_ACTIONS, postLoginSuccess, postLoginFailed } from './action'
-import responseUtil from '../../utils/responseUtil'
+import responseUtil from '@src/utils/responseUtil'
 
 export const loginEpic = (action$: ActionsObservable<AnyAction>) =>
   action$.pipe(

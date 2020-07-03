@@ -1,9 +1,9 @@
-import { UsersForm } from '../../models/user'
+import { UsersForm } from '@src/models/user'
 
 export const REGISTER_ACTIONS = {
-    REGISTER_USER: '@LOGIN/REGISTER_USER',
-    REGISTER_USER_SUCCESS: '@LOGIN/REGISTER_USER_SUCCESS',
-    REGISTER_USER_FAILURE: '@LOGIN/REGISTER_USER_FAILURE',
+  REGISTER_USER: '@LOGIN/REGISTER_USER',
+  REGISTER_USER_SUCCESS: '@LOGIN/REGISTER_USER_SUCCESS',
+  REGISTER_USER_FAILURE: '@LOGIN/REGISTER_USER_FAILURE',
 }
 
 export const registerUser = (req: UsersForm) => ({

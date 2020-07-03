@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { Button, Dialog, DialogContent, DialogTitle, Grid, Typography, IconButton } from '@material-ui/core'
 import { Cancel, KeyboardArrowRight } from '@material-ui/icons'
 
-import { Hotel } from '../../models/hotel'
-import routes from '../../routes'
+import { Hotel } from '@src/models/hotel'
+import routes from '@src/routes'
 import BeforeOrderPopUp from './beforeOrderPopUp'
 import WarningPopUp from './warningPopUp'
-import responseUtil from '../../utils/responseUtil'
-import { RESERVATION_ACTIONS } from '../../epics/reservation/actions'
+import responseUtil from '@src/utils/responseUtil'
+import { RESERVATION_ACTIONS } from '@src/epics/reservation/actions'
 
 export interface DialogProps {
   hotelData: Hotel

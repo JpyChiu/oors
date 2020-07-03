@@ -12,9 +12,9 @@ import {
   Grid,
 } from '@material-ui/core'
 
-import { UsersForm } from '../../models/user'
-import responseUtil from '../../utils/responseUtil'
-import { REGISTER_ACTIONS } from '../../epics/register/action'
+import { UsersForm } from '@src/models/user'
+import responseUtil from '@src/utils/responseUtil'
+import { REGISTER_ACTIONS } from '@src/epics/register/action'
 
 enum userContent {
   checkPasswordStr = '確認密碼',
@@ -90,13 +90,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
   const { confirmBtnFuncion, enable, onClose, children } = props
   const { backDrop, cancelButton: cancelButtonStyle, registerButton: registerButtonStyle, title } = useStyles()
   const [popUpOpen, setPopUpOpen] = useState(false)
-  const {
-    checkPasswordStr,
-    emailStr,
-    nameStr,
-    passwordStr,
-    phoneStr,
-  } = userContent
+  const { checkPasswordStr, emailStr, nameStr, passwordStr, phoneStr } = userContent
 
   const handlePopUpClose = useCallback(() => {
     setPopUpOpen(false)
@@ -104,11 +98,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
   }, [onClose])
 
   const labelAndTextInput = (
-    key:
-      | typeof checkPasswordStr
-      | typeof emailStr
-      | typeof nameStr
-      | typeof passwordStr,
+    key: typeof checkPasswordStr | typeof emailStr | typeof nameStr | typeof passwordStr,
     name: 'checkPassword' | 'email' | 'name' | 'password',
     type: 'email' | 'text' | 'password',
   ) => {
@@ -116,13 +106,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
       <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
         {renderLabel(snakeToCamel(key))}
         <Grid item sm={7}>
-          <Field
-            required
-            name={name}
-            component={TextField as React.FC}
-            type={type}
-            variant="outlined"
-          />
+          <Field required name={name} component={TextField as React.FC} type={type} variant="outlined" />
         </Grid>
       </Grid>
     )
@@ -135,11 +119,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
     return value.replace(/[^\d]/g, '')
   }
 
-  const labelAndPhoneInput = (
-    key:
-      | typeof phoneStr,
-    name: 'phone',
-  ) => {
+  const labelAndPhoneInput = (key: typeof phoneStr, name: 'phone') => {
     return (
       <Grid container direction="row" justify="flex-start" alignItems="center" style={{ marginBottom: 20 }}>
         {renderLabel(snakeToCamel(key))}
@@ -175,7 +155,7 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
         next: () => {
           setPopUpOpen(true)
         },
-      }
+      },
     )
 
     return () => sub.unsubscribe()
@@ -186,11 +166,9 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
 
   const onSubmit = useCallback(
     (value: userFormWithCheckPass) => {
-      if(value.password !== value.checkPassword){
+      if (value.password !== value.checkPassword) {
         return { checkPassword: '與密碼不一致' }
-      }
-      else
-        confirmBtnFuncion(value)
+      } else confirmBtnFuncion(value)
     },
     [confirmBtnFuncion],
   )
@@ -237,15 +215,10 @@ export default function Register(props: React.PropsWithChildren<DialogProps>) {
           </form>
         )}
       />
-      <Dialog 
-        fullWidth={true}
-        open={popUpOpen} 
-        onClose={handlePopUpClose}>
-        <DialogTitle id="alert-dialog-title"/>
+      <Dialog fullWidth={true} open={popUpOpen} onClose={handlePopUpClose}>
+        <DialogTitle id="alert-dialog-title" />
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            註冊成功！
-          </DialogContentText>
+          <DialogContentText id="alert-dialog-description">註冊成功！</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handlePopUpClose} color="primary" autoFocus>

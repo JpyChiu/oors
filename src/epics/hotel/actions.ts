@@ -1,4 +1,4 @@
-import { Hotel } from '../../models/hotel'
+import { Hotel } from '@src/models/hotel'
 
 export const HOTEL_ACTIONS = {
   GET_CITIES_AND_PERSON: '@HOTEL/GET_CITIES_AND_PERSON',

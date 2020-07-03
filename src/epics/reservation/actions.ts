@@ -1,4 +1,4 @@
-import { Reservation, ReservationPostReqBody } from '../../models/reservation'
+import { Reservation, ReservationPostReqBody } from '@src/models/reservation'
 
 export const RESERVATION_ACTIONS = {
   POST_RESERVATION: '@RESERVATION/POST_RESERVATION',

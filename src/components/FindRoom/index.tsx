@@ -8,10 +8,10 @@ import { AddLocation, CalendarToday, People } from '@material-ui/icons'
 import DateFnsUtils from '@date-io/date-fns'
 import { Select, KeyboardDatePicker, SelectData } from 'mui-rff'
 
-import { getCitiesAndPerson, getEnabledHotels } from '../../epics/hotel/actions'
-import { StoreState } from '../../reducers/rootReducer'
-import { dateToYyyymmdd } from '../../utils/dateConvert'
-import routes from '../../routes'
+import { getCitiesAndPerson, getEnabledHotels } from '@src/epics/hotel/actions'
+import { StoreState } from '@src/reducers/rootReducer'
+import { dateToYyyymmdd } from '@src/utils/dateConvert'
+import routes from '@src/routes'
 
 const SearchButton = styled(Button)({
   width: 185,
